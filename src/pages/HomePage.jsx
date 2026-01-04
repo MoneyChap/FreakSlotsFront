@@ -1,23 +1,29 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { sections } from "../data/mockGames";
 import GameCarousel from "../components/GameCarousel";
-import { useEffect } from "react";
-import { initTelegramUi } from "../lib/telegram";
+
+const API_BASE = import.meta.env.VITE_API_BASE;
 
 export default function HomePage() {
     const nav = useNavigate();
+    const [sections, setSections] = useState([]);
+    const [loading, setLoading] = useState(true);
+
     useEffect(() => {
-        initTelegramUi();
+        fetch(`${API_BASE}/api/home`)
+            .then((r) => r.json())
+            .then((data) => setSections(Array.isArray(data) ? data : []))
+            .finally(() => setLoading(false));
     }, []);
 
     return (
         <div className="page">
-            <div className="shell roundedFrame">
-                <div className="topbar">
-                    <div className="appTitle">FreakSlots</div>
-                    <div style={{ opacity: 0.7 }}>•••</div>
-                </div>
+            <div className="topbar">
+                <div className="appTitle">FreakSlots</div>
+                <div style={{ opacity: 0.7 }}>•••</div>
             </div>
+
+            {loading && <div style={{ opacity: 0.7, padding: 10 }}>Loading…</div>}
 
             {sections.map((s) => (
                 <div key={s.id}>
