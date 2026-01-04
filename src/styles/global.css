@@ -1,0 +1,152 @@
+:root {
+    color-scheme: dark;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    background: #0b0b0c;
+    color: #ffffff;
+    padding: 0;
+    margin: 0;
+}
+
+.appRoot {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+.appFrame {
+    width: 100%;
+    max-width: 500px;
+    min-width: 0;
+    background: #19191b;
+}
+
+a {
+    color: inherit;
+}
+
+.page {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-top: calc(14px + env(safe-area-inset-top));
+    padding-bottom: calc(14px + env(safe-area-inset-bottom));
+}
+
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 14px;
+    width: 100%;
+}
+
+.appTitle {
+    font-size: 20px;
+    letter-spacing: 0.2px;
+}
+
+.sectionTitle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 26px;
+    margin: 18px 2px 12px;
+}
+
+.shell {
+    max-width: 500px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.roundedFrame {
+    border-radius: 26px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.02);
+    overflow: hidden;
+}
+
+.card {
+    width: 150px;
+    height: 150px;
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+    background: #17181a;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.cardOverlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 10px 10px 9px;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.75));
+}
+
+.cardName {
+    font-size: 14px;
+    line-height: 1.1;
+}
+
+.cardProvider {
+    font-size: 12px;
+    opacity: 0.7;
+    margin-top: 4px;
+}
+
+.gameHeader {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 2px 12px;
+}
+
+.btn {
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+    border-radius: 12px;
+    padding: 9px 12px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.btnPrimary {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.iframeBox {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: #0f1012;
+    aspect-ratio: 9 / 16;
+}
+
+.iframeBox iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
