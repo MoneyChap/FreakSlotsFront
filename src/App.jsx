@@ -12,7 +12,6 @@ export default function App() {
   return (
     <div className="appRoot">
       <div className="appFrame">
-        HELLO WORLD
         <HashRouter>
           <Routes>
             <Route path="/" element={<HomePage />} />
