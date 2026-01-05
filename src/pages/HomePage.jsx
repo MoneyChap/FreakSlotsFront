@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import GameCarousel from "../components/GameCarousel";
 const API_BASE = import.meta.env.VITE_API_BASE;
 
 export default function HomePage() {
