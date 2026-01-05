@@ -11,10 +11,20 @@ export default function HomePage() {
 
     useEffect(() => {
         fetch(`${API_BASE}/api/home`)
-            .then((r) => r.json())
-            .then((data) => setSections(Array.isArray(data) ? data : []))
+            .then((r) => {
+                if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                return r.json();
+            })
+            .then((data) => {
+                console.log("HOME DATA", data);
+                setSections(Array.isArray(data) ? data : []);
+            })
+            .catch((e) => {
+                console.error("HOME API FAILED", e);
+            })
             .finally(() => setLoading(false));
     }, []);
+
 
     return (
         <div className="page">
