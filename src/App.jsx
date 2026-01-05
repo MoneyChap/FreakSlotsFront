@@ -17,6 +17,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/game/:id" element={<GamePage />} />
+            <Route path="*" element={<HomePage />} />
           </Routes>
         </HashRouter>
       </div>
