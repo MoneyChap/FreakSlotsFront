@@ -255,8 +255,7 @@ a {
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    padding-top: calc(10px + env(safe-area-inset-top));
-    padding-bottom: calc(10px + env(safe-area-inset-bottom));
+    padding-top: calc(40px + env(safe-area-inset-top));
 }
 
 .gameTopbar {
@@ -273,8 +272,6 @@ a {
     /* important: lets iframe shrink correctly */
     position: relative;
     overflow: hidden;
-    border-radius: 16px;
-    margin: 0 12px 0;
     border: 1px solid rgba(255, 255, 255, 0.08);
     background: #0f1012;
 }
