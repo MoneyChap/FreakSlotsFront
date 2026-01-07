@@ -34,7 +34,7 @@ export default function HomePage() {
     }, []);
 
     return (
-        <div className="page" style={{paddingBottom: 50}}>
+        <div className="page" style={{paddingBottom: 80}}>
             <div className="topbar">
                 <div className="topbarPill">
                     <div className="topbarStatus">
