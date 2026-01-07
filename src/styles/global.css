@@ -36,7 +36,7 @@ a {
     width: 100%;
     display: flex;
     flex-direction: column;
-    padding-top: calc(14px + env(safe-area-inset-top));
+    padding-top: calc(60px + env(safe-area-inset-top));
     padding-bottom: calc(14px + env(safe-area-inset-bottom));
 }
 
@@ -47,6 +47,74 @@ a {
     padding: 6px 14px;
     width: 100%;
 }
+
+.topbarRight {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.statusPill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 10px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.statusDot {
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: #34d399;
+    /* green */
+    box-shadow: 0 0 10px rgba(52, 211, 153, 0.7);
+}
+
+.userPill {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 8px 6px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    max-width: 240px;
+}
+
+.userName {
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 0.9;
+    max-width: 160px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.userAvatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    object-fit: cover;
+    display: block;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.userAvatarFallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 800;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.12);
+}
+
 
 .appTitle {
     font-size: 20px;
