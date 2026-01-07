@@ -255,7 +255,7 @@ a {
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    padding-top: calc(40px + env(safe-area-inset-top));
+    padding-top: calc(60px + env(safe-area-inset-top));
 }
 
 .gameTopbar {
