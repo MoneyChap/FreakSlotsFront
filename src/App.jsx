@@ -60,8 +60,11 @@ export function AppLayout() {
 
 function pickRandomWinEmoji() {
   const pool = ["💎", "🍒", "7", "🔔", "🍋", "🎁"];
-  const idx = Math.floor(Math.random() * pool.length);
-  return pool[idx];
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
+function sleep(ms) {
+  return new Promise((r) => setTimeout(r, ms));
 }
 
 export default function App() {
@@ -80,37 +83,41 @@ export default function App() {
   useEffect(() => {
     initTelegramUi();
 
-    if (splashPhase === "hidden") {
-      // Still warm cache, but no splash
-      warmHomeCache();
-      return;
-    }
+    // Always warm cache (even if splash is hidden)
+    const warmPromise = warmHomeCache();
 
-    const MIN_MS = 1600; // set to 2000 if you want closer to 2 seconds
-    const WIN_MS = 450;
+    if (splashPhase === "hidden") return;
+
+    const MIN_MS = 1700; // increase to ~2000 if you want
+    const STOP_GAP_MS = 220; // delay between reel stops
+    const POP_MS = 520; // how long the “win pop” stays visible
 
     let cancelled = false;
 
-    const minTimer = new Promise((resolve) => setTimeout(resolve, MIN_MS));
-
     (async () => {
-      // run both in parallel
-      await Promise.all([warmHomeCache(), minTimer]);
-
+      // Ensure splash stays for at least MIN_MS AND cache warmup runs in parallel
+      await Promise.all([warmPromise, sleep(MIN_MS)]);
       if (cancelled) return;
 
-      // show the “win alignment”
-      setSplashPhase("win");
+      // Sequential reel stops
+      setSplashPhase("stop1");
+      await sleep(STOP_GAP_MS);
+      if (cancelled) return;
 
-      setTimeout(() => {
-        if (cancelled) return;
-        try {
-          sessionStorage.setItem("freakslots_splash_seen_v1", "1");
-        } catch {
-          // ignore
-        }
-        setSplashPhase("hidden");
-      }, WIN_MS);
+      setSplashPhase("stop2");
+      await sleep(STOP_GAP_MS);
+      if (cancelled) return;
+
+      setSplashPhase("stop3"); // this triggers payline + pop animation
+      await sleep(POP_MS);
+      if (cancelled) return;
+
+      try {
+        sessionStorage.setItem("freakslots_splash_seen_v1", "1");
+      } catch {
+        // ignore
+      }
+      setSplashPhase("hidden");
     })();
 
     return () => {

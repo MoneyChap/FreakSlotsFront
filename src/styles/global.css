@@ -7,8 +7,7 @@
 }
 
 body {
-    /* font-family: "Montserrat", sans-serif; */
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
     background: #050505;
     color: #ffffff;
     padding: 0;
@@ -32,14 +31,15 @@ a {
     background: #0d0d0e;
 }
 
-/* Home page layout */
+/* Page layout */
 .page {
     min-height: 100vh;
     width: 100%;
     display: flex;
     flex-direction: column;
     padding-top: calc(100px + env(safe-area-inset-top));
-    padding-bottom: calc(14px + env(safe-area-inset-bottom));
+    /* IMPORTANT: bottom nav is fixed, so leave room for it */
+    padding-bottom: calc(96px + env(safe-area-inset-bottom));
 }
 
 /* Topbar (single merged pill) */
@@ -335,6 +335,7 @@ a {
     justify-content: center;
 }
 
+/* Bottom navigation */
 .bottomNav {
     position: fixed;
     left: 50%;
@@ -519,33 +520,6 @@ a {
     text-align: right;
 }
 
-.contactManagerBtn {
-    margin-top: 18px;
-    width: 100%;
-    height: 62px;
-    border-radius: 18px;
-    border: 0;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    text-decoration: none;
-    color: #fff;
-    font-size: 20px;
-    font-weight: 700;
-    background: linear-gradient(180deg, #e5661f, #c94c1a);
-    box-shadow: 0 0 22px rgba(201, 76, 26, 0.35);
-}
-
-.contactManagerBtn:active {
-    transform: scale(0.99);
-}
-
-.contactManagerIcon {
-    line-height: 0;
-}
-
 .profileGeoActions {
     margin-top: 14px;
     display: flex;
@@ -577,30 +551,31 @@ a {
     opacity: 0.65;
 }
 
-.geoGhostBtn {
-    width: 110px;
+.contactManagerBtn {
+    margin-top: 18px;
+    width: 100%;
     height: 62px;
     border-radius: 18px;
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    background: rgba(255, 255, 255, 0.06);
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 14px;
-    font-weight: 700;
+    border: 0;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    text-decoration: none;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+    background: linear-gradient(180deg, #e5661f, #c94c1a);
+    box-shadow: 0 0 22px rgba(201, 76, 26, 0.35);
 }
 
-.geoGhostBtn:active {
+.contactManagerBtn:active {
     transform: scale(0.99);
 }
 
-.geoGhostBtn:disabled {
-    opacity: 0.65;
-}
-
-.geoErrorText {
-    margin-top: 10px;
-    font-size: 13px;
-    opacity: 0.75;
+.contactManagerIcon {
+    line-height: 0;
 }
 
 /* Home inline messages */
@@ -646,7 +621,8 @@ a {
     content: "";
     position: absolute;
     inset: -60px;
-    background: radial-gradient(circle at 30% 20%, rgba(255, 122, 0, 0.20), transparent 45%),
+    background:
+        radial-gradient(circle at 30% 20%, rgba(255, 122, 0, 0.20), transparent 45%),
         radial-gradient(circle at 80% 70%, rgba(59, 130, 246, 0.14), transparent 48%);
     filter: blur(18px);
     pointer-events: none;
@@ -673,7 +649,6 @@ a {
     margin-top: -6px;
 }
 
-/* Reel loader */
 .splashLogo {
     width: 132px;
     height: 96px;
@@ -687,6 +662,7 @@ a {
 }
 
 .splashReels {
+    position: relative;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 8px;
@@ -715,6 +691,15 @@ a {
     z-index: 1;
 }
 
+.reelWindow {
+    height: 70px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Spinning track */
 .reelTrack {
     display: flex;
     flex-direction: column;
@@ -724,11 +709,15 @@ a {
     animation: reelSpin 1.05s linear infinite;
 }
 
-.reelTrack2 {
+.reelSpin1 {
+    animation-duration: 1.05s;
+}
+
+.reelSpin2 {
     animation-duration: 0.92s;
 }
 
-.reelTrack3 {
+.reelSpin3 {
     animation-duration: 1.18s;
 }
 
@@ -748,6 +737,68 @@ a {
     }
 }
 
+/* Stopped stack (3 symbols: top/mid/bot) */
+.reelStopStack {
+    height: 70px;
+    width: 100%;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    align-items: center;
+    justify-items: center;
+    padding: 8px 0;
+}
+
+.reelSymbol {
+    font-size: 18px;
+    line-height: 18px;
+    opacity: 0.7;
+}
+
+.reelSymbolMid {
+    font-size: 22px;
+    line-height: 22px;
+    opacity: 1;
+    filter: drop-shadow(0 0 10px rgba(255, 122, 0, 0.22));
+}
+
+/* Payline overlay (middle row) */
+.payline {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 2px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    opacity: 0.35;
+    pointer-events: none;
+}
+
+.paylineWin {
+    opacity: 1;
+    background: rgba(255, 122, 0, 0.9);
+    box-shadow: 0 0 18px rgba(255, 122, 0, 0.45);
+    animation: paylinePop 520ms ease-out both;
+}
+
+@keyframes paylinePop {
+    0% {
+        transform: translateY(-50%) scaleX(0.6);
+        opacity: 0.2;
+    }
+
+    55% {
+        transform: translateY(-50%) scaleX(1.06);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-50%) scaleX(1.0);
+        opacity: 1;
+    }
+}
+
 /* Progress shimmer */
 .splashProgress {
     position: relative;
@@ -764,7 +815,10 @@ a {
     height: 100%;
     width: 55%;
     border-radius: 999px;
-    background: linear-gradient(90deg, rgba(255, 122, 0, 0.0), rgba(255, 122, 0, 0.85), rgba(255, 122, 0, 0.0));
+    background: linear-gradient(90deg,
+            rgba(255, 122, 0, 0.0),
+            rgba(255, 122, 0, 0.85),
+            rgba(255, 122, 0, 0.0));
     animation: splashBar 1.1s ease-in-out infinite;
 }
 
@@ -778,29 +832,27 @@ a {
     }
 }
 
-/* Win snap effect */
+/* Win pop */
 .splashCardWin {
-    transform: scale(1.01);
+    animation: splashCardPop 520ms ease-out both;
     border-color: rgba(255, 122, 0, 0.22);
-    box-shadow: 0 0 26px rgba(255, 122, 0, 0.20);
 }
 
-.splashReelsWin .reel {
-    border-color: rgba(255, 122, 0, 0.26);
-}
+@keyframes splashCardPop {
+    0% {
+        transform: scale(0.98);
+        box-shadow: 0 0 0 rgba(255, 122, 0, 0);
+    }
 
-.reelTrackFreeze {
-    animation: none !important;
-    transform: translateY(0) !important;
-    padding: 0 !important;
-    height: 100%;
-    justify-content: center;
-}
+    55% {
+        transform: scale(1.02);
+        box-shadow: 0 0 26px rgba(255, 122, 0, 0.22);
+    }
 
-.reelWinSymbol {
-    font-size: 22px;
-    line-height: 22px;
-    transform: translateY(0);
+    100% {
+        transform: scale(1.01);
+        box-shadow: 0 0 20px rgba(255, 122, 0, 0.18);
+    }
 }
 
 .splashBarWin {
