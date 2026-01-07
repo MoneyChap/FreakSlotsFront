@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   HashRouter,
   Routes,
@@ -10,10 +10,9 @@ import {
 
 import HomePage from "./pages/HomePage.jsx";
 import GamePage from "./pages/GamePage.jsx";
-import CasinosPage from "./pages/CasinosPage.jsx";
-import ProfilePage from "./pages/ProfilePage.jsx";
-import BottomNav from "./components/BottomNav.jsx";
 import { initTelegramUi } from "./lib/telegram.js";
+import SplashScreen from "./components/SplashScreen.jsx";
+import { warmHomeCache } from "./lib/homeCache.js";
 
 function TelegramBackButtonController() {
   const navigate = useNavigate();
@@ -43,20 +42,41 @@ function TelegramBackButtonController() {
 }
 
 export function AppLayout() {
-  const isGamePage = useMatch("/game/:id");
-
   return (
     <>
       <TelegramBackButtonController />
       <Outlet />
-      {!isGamePage && <BottomNav />}
     </>
   );
 }
 
 export default function App() {
+  const [showSplash, setShowSplash] = useState(() => {
+    try {
+      return sessionStorage.getItem("freakslots_splash_seen_v1") !== "1";
+    } catch {
+      return true;
+    }
+  });
+
   useEffect(() => {
     initTelegramUi();
+
+    // Warm cache on app open (so HomePage can render instantly from cache)
+    warmHomeCache();
+
+    // Hide splash after a short moment (also mark as seen for this session)
+    // This avoids a “blank flash” during Telegram WebView initialization.
+    const t = setTimeout(() => {
+      try {
+        sessionStorage.setItem("freakslots_splash_seen_v1", "1");
+      } catch {
+        // ignore
+      }
+      setShowSplash(false);
+    }, 900);
+
+    return () => clearTimeout(t);
   }, []);
 
   return (
@@ -66,12 +86,12 @@ export default function App() {
           <Routes>
             <Route element={<AppLayout />}>
               <Route path="/" element={<HomePage />} />
-              <Route path="/casinos" element={<CasinosPage />} />
-              <Route path="/profile" element={<ProfilePage />} />
               <Route path="/game/:id" element={<GamePage />} />
             </Route>
           </Routes>
         </HashRouter>
+
+        {showSplash ? <SplashScreen /> : null}
       </div>
     </div>
   );

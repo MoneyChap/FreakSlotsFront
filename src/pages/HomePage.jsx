@@ -1,40 +1,62 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import GameCarousel from "../components/GameCarousel";
 import { getTelegramUser } from "../lib/telegramUser";
-
-const API_BASE = import.meta.env.VITE_API_BASE;
+import { readHomeCache, fetchHomeFromApi, writeHomeCache } from "../lib/homeCache";
 
 export default function HomePage() {
     const nav = useNavigate();
-    const [sections, setSections] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [err, setErr] = useState("");
     const [tgUser, setTgUser] = useState(null);
+
+    const cached = readHomeCache();
+
+    const [sections, setSections] = useState(() => (cached?.sections ? cached.sections : []));
+    const [loading, setLoading] = useState(() => !cached?.sections?.length);
+    const [err, setErr] = useState("");
 
     useEffect(() => {
         setTgUser(getTelegramUser());
     }, []);
 
     useEffect(() => {
-        (async () => {
+        let cancelled = false;
+
+        async function load() {
             try {
-                const url = `${API_BASE}/api/home`;
-                const res = await fetch(url);
-                const text = await res.text(); // read as text first
-                if (!res.ok) throw new Error(`HTTP ${res.status}: ${text.slice(0, 200)}`);
-                const data = JSON.parse(text);
+                // If we have fresh cache, do not show loading, just background refresh.
+                if (cached?.sections?.length) {
+                    setLoading(false);
+                }
+
+                const data = await fetchHomeFromApi();
+
+                if (cancelled) return;
+
                 setSections(Array.isArray(data) ? data : []);
+                writeHomeCache(Array.isArray(data) ? data : []);
+                setErr("");
             } catch (e) {
+                if (cancelled) return;
+
+                // If cache exists, keep UI and only show error silently
+                // If no cache, show error openly
                 setErr(String(e.message || e));
             } finally {
+                if (cancelled) return;
                 setLoading(false);
             }
-        })();
+        }
+
+        load();
+        return () => {
+            cancelled = true;
+        };
+        // Intentionally run once only
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
-        <div className="page" style={{paddingBottom: 80}}>
+        <div className="page">
             <div className="topbar">
                 <div className="topbarPill">
                     <div className="topbarStatus">
@@ -45,9 +67,7 @@ export default function HomePage() {
                     <div className="topbarDivider" />
 
                     <div className="topbarUser">
-                        <div className="userName">
-                            {tgUser ? tgUser.name : "Guest"}
-                        </div>
+                        <div className="userName">{tgUser ? tgUser.name : "Guest"}</div>
 
                         {tgUser?.photoUrl ? (
                             <img className="userAvatar" src={tgUser.photoUrl} alt={tgUser.name} />
@@ -62,13 +82,15 @@ export default function HomePage() {
                 </div>
             </div>
 
-            {loading && <div style={{ opacity: 0.7, padding: 10 }}>Loading…</div>}
+            {/* Only show this when there is no cache */}
+            {loading ? <div className="homeInlineLoading">Loading…</div> : null}
 
-            {err && (
-                <div style={{ padding: 12, color: "#ffb4b4", fontSize: 13, whiteSpace: "pre-wrap" }}>
-                    Error loading API:\n{err}\n\nAPI_BASE: {API_BASE}
+            {/* If cache exists, do not block UI; show small error line */}
+            {err ? (
+                <div className="homeInlineError">
+                    {cached?.sections?.length ? "Update failed. Showing cached games." : `Error loading API:\n${err}`}
                 </div>
-            )}
+            ) : null}
 
             {sections.map((s) => (
                 <div key={s.id} className="sectionBlock">
@@ -77,11 +99,7 @@ export default function HomePage() {
                         <span>{s.title}</span>
                     </div>
 
-                    <GameCarousel
-                        games={s.games}
-                        sectionId={s.id}
-                        onPlay={(game) => nav(`/game/${game.id}`)}
-                    />
+                    <GameCarousel games={s.games} sectionId={s.id} onPlay={(game) => nav(`/game/${game.id}`)} />
                 </div>
             ))}
         </div>
