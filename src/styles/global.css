@@ -694,15 +694,15 @@ a {
 }
 
 .reelSpin1 {
-    animation-duration: 0.5s;
+    animation-duration: 1.05s;
 }
 
 .reelSpin2 {
-    animation-duration: 0.41s;
+    animation-duration: 0.92s;
 }
 
 .reelSpin3 {
-    animation-duration: 0.6s;
+    animation-duration: 1.18s;
 }
 
 .reelTrack span {
