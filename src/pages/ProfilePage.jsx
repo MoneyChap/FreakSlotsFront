@@ -12,17 +12,8 @@ function initialsFromUser(u) {
 export default function ProfilePage() {
     const tgUser = useMemo(() => getTelegramUser(), []);
     const [geo, setGeo] = useState(() => readSavedGeo());
-    const [geoBusy, setGeoBusy] = useState(false);
 
     const managerUrl = import.meta.env.VITE_MANAGER_TG_URL || "https://t.me/";
-
-    // On mount: make sure geo exists (in case initTelegramUi ran outside this session)
-    useEffect(() => {
-        (async () => {
-            const latest = await ensureGeo();
-            if (latest) setGeo(latest);
-        })();
-    }, []);
 
     async function refreshGeo() {
         setGeoBusy(true);
@@ -65,24 +56,6 @@ export default function ProfilePage() {
                             <div className="profileLabel">GEO:</div>
                             <div className="profileValue">{geoLabel}</div>
                         </div>
-
-                        {geo?.timezone ? (
-                            <div className="profileRow">
-                                <div className="profileLabel">Timezone:</div>
-                                <div className="profileValue">{geo.timezone}</div>
-                            </div>
-                        ) : null}
-                    </div>
-
-                    <div className="profileGeoActions">
-                        <button
-                            type="button"
-                            className="geoPrimaryBtn"
-                            onClick={refreshGeo}
-                            disabled={geoBusy}
-                        >
-                            {geoBusy ? "Refreshing…" : "Refresh GEO"}
-                        </button>
                     </div>
 
                     <a className="contactManagerBtn" href={managerUrl} target="_blank" rel="noreferrer">
