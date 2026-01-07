@@ -1,3 +1,6 @@
+// src/lib/telegram.js
+import { ensureGeo } from "./geo";
+
 export function initTelegramUi() {
     const tg = window.Telegram?.WebApp;
     if (!tg) return;
@@ -5,10 +8,13 @@ export function initTelegramUi() {
     tg.ready?.();
     tg.expand?.();
 
-    // Request fullscreen (Telegram Bot API 8.0+ clients)
     try {
         tg.requestFullscreen?.();
-    } catch (e) {
-        // ignore; some clients/versions may not support it
+    } catch {
+        // ignore
     }
+
+    // Option 2: automatic geo on app open (IP-based)
+    // Do not block UI. Just fire and forget.
+    ensureGeo();
 }
