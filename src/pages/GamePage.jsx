@@ -18,20 +18,16 @@ export default function GamePage() {
         const tg = window.Telegram?.WebApp;
         if (!tg?.BackButton) return;
 
-        const onBack = () => {
-            // do not call tg.close()
-            nav("/");
-        };
+        const onBack = () => window.location.hash = "#/"; // hard navigate, very reliable
 
         tg.BackButton.show();
-        tg.BackButton.offClick(onBack); // safety: avoid duplicates
         tg.BackButton.onClick(onBack);
 
         return () => {
             tg.BackButton.offClick(onBack);
             tg.BackButton.hide();
         };
-    }, [nav]);
+    }, []);
 
     // Load game from backend by id
     useEffect(() => {
@@ -67,7 +63,6 @@ export default function GamePage() {
         return (
             <div className="gamePage">
                 <div className="gameTopbar">
-                    <button className="btn" onClick={() => nav("/")}>Back</button>
                     <button className="btn btnPrimary" style={{ margin: "0 auto" }} disabled>
                         Play Real Slots
                     </button>
@@ -82,7 +77,6 @@ export default function GamePage() {
         return (
             <div className="gamePage">
                 <div className="gameTopbar">
-                    <button className="btn" onClick={() => nav("/")}>Back</button>
                     <button className="btn btnPrimary" style={{ margin: "0 auto" }} disabled>
                         Play Real Slots
                     </button>
@@ -96,7 +90,6 @@ export default function GamePage() {
     return (
         <div className="gamePage">
             <div className="gameTopbar">
-                <button className="btn" onClick={() => nav("/")}>Back</button>
 
                 <button
                     className="btn btnPrimary"
