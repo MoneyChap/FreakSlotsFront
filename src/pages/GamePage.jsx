@@ -18,13 +18,17 @@ export default function GamePage() {
         const tg = window.Telegram?.WebApp;
         if (!tg?.BackButton) return;
 
-        const goBack = () => nav("/");
+        const onBack = () => {
+            // do not call tg.close()
+            nav("/");
+        };
 
         tg.BackButton.show();
-        tg.BackButton.onClick(goBack);
+        tg.BackButton.offClick(onBack); // safety: avoid duplicates
+        tg.BackButton.onClick(onBack);
 
         return () => {
-            tg.BackButton.offClick(goBack);
+            tg.BackButton.offClick(onBack);
             tg.BackButton.hide();
         };
     }, [nav]);
