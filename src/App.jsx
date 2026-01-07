@@ -1,5 +1,13 @@
 import { useEffect } from "react";
-import { HashRouter, Routes, Route } from "react-router-dom";
+import {
+  HashRouter,
+  Routes,
+  Route,
+  Outlet,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
+
 import HomePage from "./pages/HomePage.jsx";
 import GamePage from "./pages/GamePage.jsx";
 import { initTelegramUi } from "./lib/telegram.js";
@@ -31,6 +39,15 @@ function TelegramBackButtonController() {
   return null;
 }
 
+function AppLayout() {
+  return (
+    <>
+      <TelegramBackButtonController />
+      <Outlet />
+    </>
+  );
+}
+
 export default function App() {
   useEffect(() => {
     initTelegramUi();
@@ -40,11 +57,11 @@ export default function App() {
     <div className="appRoot">
       <div className="appFrame">
         <HashRouter>
-          <TelegramBackButtonController />
           <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/game/:id" element={<GamePage />} />
-            <Route path="*" element={<HomePage />} />
+            <Route element={<AppLayout />}>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/game/:id" element={<GamePage />} />
+            </Route>
           </Routes>
         </HashRouter>
       </div>
