@@ -42,13 +42,17 @@ export default function HomePage() {
             )}
 
             {sections.map((s) => (
-                <div key={s.id}>
+                <div key={s.id} className="sectionBlock">
                     <div className="sectionTitle">
                         <span>{s.icon}</span>
                         <span>{s.title}</span>
                     </div>
 
-                    <GameCarousel games={s.games} onSelect={(game) => nav(`/game/${game.id}`)} />
+                    <GameCarousel
+                        games={s.games}
+                        sectionId={s.id}
+                        onPlay={(game) => nav(`/game/${game.id}`)}
+                    />
                 </div>
             ))}
         </div>
