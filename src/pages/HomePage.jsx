@@ -36,20 +36,26 @@ export default function HomePage() {
     return (
         <div className="page">
             <div className="topbar">
-                <div className="appTitle">FreakSlots</div>
-
-                <div className="topbarRight">
+                {/* LEFT: Online status */}
+                <div className="topbarLeft">
                     <div className="statusPill">
                         <span className="statusDot" />
                         <span>Online</span>
                     </div>
+                </div>
 
+                {/* RIGHT: User info */}
+                <div className="topbarRight">
                     {tgUser ? (
                         <div className="userPill">
                             <div className="userName">{tgUser.name}</div>
 
                             {tgUser.photoUrl ? (
-                                <img className="userAvatar" src={tgUser.photoUrl} alt={tgUser.name} />
+                                <img
+                                    className="userAvatar"
+                                    src={tgUser.photoUrl}
+                                    alt={tgUser.name}
+                                />
                             ) : (
                                 <div className="userAvatar userAvatarFallback">
                                     {(tgUser.firstName?.[0] || "U").toUpperCase()}

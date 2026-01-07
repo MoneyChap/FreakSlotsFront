@@ -51,7 +51,6 @@ a {
 .topbarRight {
     display: flex;
     align-items: center;
-    gap: 10px;
 }
 
 .statusPill {
