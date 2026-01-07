@@ -777,3 +777,33 @@ a {
         transform: translateX(220%);
     }
 }
+
+/* Win snap effect */
+.splashCardWin {
+    transform: scale(1.01);
+    border-color: rgba(255, 122, 0, 0.22);
+    box-shadow: 0 0 26px rgba(255, 122, 0, 0.20);
+}
+
+.splashReelsWin .reel {
+    border-color: rgba(255, 122, 0, 0.26);
+}
+
+.reelTrackFreeze {
+    animation: none !important;
+    transform: translateY(0) !important;
+    padding: 0 !important;
+    height: 100%;
+    justify-content: center;
+}
+
+.reelWinSymbol {
+    font-size: 22px;
+    line-height: 22px;
+    transform: translateY(0);
+}
+
+.splashBarWin {
+    opacity: 0.95;
+    filter: drop-shadow(0 0 10px rgba(255, 122, 0, 0.35));
+}
