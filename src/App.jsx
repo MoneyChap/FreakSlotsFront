@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   HashRouter,
   Routes,
@@ -58,58 +58,33 @@ export function AppLayout() {
   );
 }
 
-function pickRandomWinEmoji() {
-  const pool = ["💎", "🍒", "7", "🔔", "🍋", "🎁"];
-  return pool[Math.floor(Math.random() * pool.length)];
-}
-
 function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms));
 }
 
 export default function App() {
-  const winEmoji = useMemo(() => pickRandomWinEmoji(), []);
-
-  const [splashPhase, setSplashPhase] = useState(() => {
+  const [showSplash, setShowSplash] = useState(() => {
     try {
-      return sessionStorage.getItem("freakslots_splash_seen_v1") === "1"
-        ? "hidden"
-        : "spinning";
+      return sessionStorage.getItem("freakslots_splash_seen_v1") !== "1";
     } catch {
-      return "spinning";
+      return true;
     }
   });
 
   useEffect(() => {
     initTelegramUi();
 
-    // Always warm cache (even if splash is hidden)
+    // Always warm the cache (even if splash is not shown)
     const warmPromise = warmHomeCache();
 
-    if (splashPhase === "hidden") return;
-
-    const MIN_MS = 1700; // increase to ~2000 if you want
-    const STOP_GAP_MS = 220; // delay between reel stops
-    const POP_MS = 520; // how long the “win pop” stays visible
+    if (!showSplash) return;
 
     let cancelled = false;
 
     (async () => {
-      // Ensure splash stays for at least MIN_MS AND cache warmup runs in parallel
-      await Promise.all([warmPromise, sleep(MIN_MS)]);
-      if (cancelled) return;
+      // Splash must be visible at least 1.7s
+      await Promise.all([warmPromise, sleep(1700)]);
 
-      // Sequential reel stops
-      setSplashPhase("stop1");
-      await sleep(STOP_GAP_MS);
-      if (cancelled) return;
-
-      setSplashPhase("stop2");
-      await sleep(STOP_GAP_MS);
-      if (cancelled) return;
-
-      setSplashPhase("stop3"); // this triggers payline + pop animation
-      await sleep(POP_MS);
       if (cancelled) return;
 
       try {
@@ -117,13 +92,14 @@ export default function App() {
       } catch {
         // ignore
       }
-      setSplashPhase("hidden");
+
+      setShowSplash(false);
     })();
 
     return () => {
       cancelled = true;
     };
-  }, [splashPhase]);
+  }, [showSplash]);
 
   return (
     <div className="appRoot">
@@ -139,9 +115,7 @@ export default function App() {
           </Routes>
         </HashRouter>
 
-        {splashPhase !== "hidden" ? (
-          <SplashScreen phase={splashPhase} winEmoji={winEmoji} />
-        ) : null}
+        {showSplash ? <SplashScreen /> : null}
       </div>
     </div>
   );

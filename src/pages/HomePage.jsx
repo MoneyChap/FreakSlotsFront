@@ -10,9 +10,12 @@ export default function HomePage() {
 
     const cached = readHomeCache();
 
-    const [sections, setSections] = useState(() => (cached?.sections ? cached.sections : []));
+    const [sections, setSections] = useState(() =>
+        cached?.sections ? cached.sections : []
+    );
+
+    // Only show "Loading..." if nothing exists at all
     const [loading, setLoading] = useState(() => !cached?.sections?.length);
-    const [err, setErr] = useState("");
 
     useEffect(() => {
         setTgUser(getTelegramUser());
@@ -23,27 +26,19 @@ export default function HomePage() {
 
         async function load() {
             try {
-                // If we have fresh cache, do not show loading, just background refresh.
-                if (cached?.sections?.length) {
-                    setLoading(false);
-                }
+                // If cache exists, do not show loading UI
+                if (cached?.sections?.length) setLoading(false);
 
                 const data = await fetchHomeFromApi();
-
                 if (cancelled) return;
 
-                setSections(Array.isArray(data) ? data : []);
-                writeHomeCache(Array.isArray(data) ? data : []);
-                setErr("");
-            } catch (e) {
-                if (cancelled) return;
-
-                // If cache exists, keep UI and only show error silently
-                // If no cache, show error openly
-                setErr(String(e.message || e));
+                const next = Array.isArray(data) ? data : [];
+                setSections(next);
+                writeHomeCache(next);
+            } catch {
+                // Intentionally silent: no frontend errors shown
             } finally {
-                if (cancelled) return;
-                setLoading(false);
+                if (!cancelled) setLoading(false);
             }
         }
 
@@ -51,12 +46,11 @@ export default function HomePage() {
         return () => {
             cancelled = true;
         };
-        // Intentionally run once only
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
-        <div className="page" style={{paddingBottom: 80}}>
+        <div className="page" style={{ paddingBottom: 80 }}>
             <div className="topbar">
                 <div className="topbarPill">
                     <div className="topbarStatus">
@@ -82,15 +76,7 @@ export default function HomePage() {
                 </div>
             </div>
 
-            {/* Only show this when there is no cache */}
             {loading ? <div className="homeInlineLoading">Loading…</div> : null}
-
-            {/* If cache exists, do not block UI; show small error line */}
-            {err ? (
-                <div className="homeInlineError">
-                    {cached?.sections?.length ? "Update failed. Showing cached games." : `Error loading API:\n${err}`}
-                </div>
-            ) : null}
 
             {sections.map((s) => (
                 <div key={s.id} className="sectionBlock">
@@ -99,7 +85,11 @@ export default function HomePage() {
                         <span>{s.title}</span>
                     </div>
 
-                    <GameCarousel games={s.games} sectionId={s.id} onPlay={(game) => nav(`/game/${game.id}`)} />
+                    <GameCarousel
+                        games={s.games}
+                        sectionId={s.id}
+                        onPlay={(game) => nav(`/game/${game.id}`)}
+                    />
                 </div>
             ))}
         </div>
