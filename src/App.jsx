@@ -4,6 +4,33 @@ import HomePage from "./pages/HomePage.jsx";
 import GamePage from "./pages/GamePage.jsx";
 import { initTelegramUi } from "./lib/telegram.js";
 
+function TelegramBackButtonController() {
+  const nav = useNavigate();
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    const tg = window.Telegram?.WebApp;
+    if (!tg?.BackButton) return;
+
+    const onBack = () => nav("/");
+
+    if (pathname.startsWith("/game/")) {
+      tg.BackButton.show();
+      tg.BackButton.offClick(onBack);
+      tg.BackButton.onClick(onBack);
+    } else {
+      tg.BackButton.offClick(onBack);
+      tg.BackButton.hide();
+    }
+
+    return () => {
+      tg.BackButton.offClick(onBack);
+    };
+  }, [pathname, nav]);
+
+  return null;
+}
+
 export default function App() {
   useEffect(() => {
     initTelegramUi();
@@ -13,6 +40,7 @@ export default function App() {
     <div className="appRoot">
       <div className="appFrame">
         <HashRouter>
+          <TelegramBackButtonController />
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/game/:id" element={<GamePage />} />

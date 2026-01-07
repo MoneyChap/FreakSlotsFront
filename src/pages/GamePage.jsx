@@ -13,21 +13,21 @@ export default function GamePage() {
     const [iframeLoading, setIframeLoading] = useState(true);
     const [iframeFailed, setIframeFailed] = useState(false);
 
-    // Telegram BackButton support
-    useEffect(() => {
-        const tg = window.Telegram?.WebApp;
-        if (!tg?.BackButton) return;
+    // // Telegram BackButton support
+    // useEffect(() => {
+    //     const tg = window.Telegram?.WebApp;
+    //     if (!tg?.BackButton) return;
 
-        const onBack = () => window.location.hash = "#/"; // hard navigate, very reliable
+    //     const onBack = () => window.location.hash = "#/"; // hard navigate, very reliable
 
-        tg.BackButton.show();
-        tg.BackButton.onClick(onBack);
+    //     tg.BackButton.show();
+    //     tg.BackButton.onClick(onBack);
 
-        return () => {
-            tg.BackButton.offClick(onBack);
-            tg.BackButton.hide();
-        };
-    }, []);
+    //     return () => {
+    //         tg.BackButton.offClick(onBack);
+    //         tg.BackButton.hide();
+    //     };
+    // }, []);
 
     // Load game from backend by id
     useEffect(() => {
