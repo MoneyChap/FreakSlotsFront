@@ -7,6 +7,7 @@
 }
 
 body {
+    /* font-family: "Montserrat", sans-serif; */
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
     background: #050505;
     color: #ffffff;
@@ -543,4 +544,61 @@ a {
 
 .contactManagerIcon {
     line-height: 0;
+}
+
+.profileGeoActions {
+    margin-top: 14px;
+    display: flex;
+    gap: 10px;
+}
+
+.geoPrimaryBtn {
+    flex: 1 1 auto;
+    height: 62px;
+    border-radius: 18px;
+    border: 0;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.geoPrimaryBtn:active {
+    transform: scale(0.99);
+}
+
+.geoPrimaryBtn:disabled {
+    opacity: 0.65;
+}
+
+.geoGhostBtn {
+    width: 110px;
+    height: 62px;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.geoGhostBtn:active {
+    transform: scale(0.99);
+}
+
+.geoGhostBtn:disabled {
+    opacity: 0.65;
+}
+
+.geoErrorText {
+    margin-top: 10px;
+    font-size: 13px;
+    opacity: 0.75;
 }
