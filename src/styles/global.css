@@ -14,6 +14,10 @@ body {
     margin: 0;
 }
 
+a {
+    color: inherit;
+}
+
 .appRoot {
     min-height: 100vh;
     display: flex;
@@ -27,10 +31,7 @@ body {
     background: #0d0d0e;
 }
 
-a {
-    color: inherit;
-}
-
+/* Home page layout */
 .page {
     min-height: 100vh;
     width: 100%;
@@ -40,29 +41,33 @@ a {
     padding-bottom: calc(14px + env(safe-area-inset-bottom));
 }
 
+/* Topbar (single merged pill) */
 .topbar {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     padding: 6px 14px;
     width: 100%;
 }
 
-.topbarRight {
+.topbarPill {
+    width: 100%;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
 }
 
-.statusPill {
-    display: inline-flex;
+.topbarStatus {
+    display: flex;
     align-items: center;
-    gap: 7px;
-    padding: 7px 10px;
-    border-radius: 999px;
-    font-size: 13px;
-    font-weight: 600;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.10);
+    gap: 8px;
+    flex: 0 0 auto;
 }
 
 .statusDot {
@@ -70,26 +75,36 @@ a {
     height: 10px;
     border-radius: 999px;
     background: #34d399;
-    /* green */
     box-shadow: 0 0 10px rgba(52, 211, 153, 0.7);
 }
 
-.userPill {
-    display: inline-flex;
+.statusText {
+    font-size: 13px;
+    font-weight: 700;
+    opacity: 0.95;
+}
+
+.topbarDivider {
+    width: 1px;
+    align-self: stretch;
+    background: rgba(255, 255, 255, 0.14);
+    border-radius: 1px;
+}
+
+.topbarUser {
+    display: flex;
     align-items: center;
     gap: 10px;
-    padding: 6px 8px 6px 10px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.10);
-    max-width: 240px;
+    min-width: 0;
+    justify-content: flex-end;
+    flex: 1 1 auto;
 }
 
 .userName {
     font-size: 13px;
-    font-weight: 600;
-    opacity: 0.9;
-    max-width: 160px;
+    font-weight: 700;
+    opacity: 0.95;
+    min-width: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -102,6 +117,7 @@ a {
     object-fit: cover;
     display: block;
     border: 1px solid rgba(255, 255, 255, 0.14);
+    flex: 0 0 auto;
 }
 
 .userAvatarFallback {
@@ -114,12 +130,7 @@ a {
     background: rgba(255, 255, 255, 0.12);
 }
 
-
-.appTitle {
-    font-size: 24px;
-    letter-spacing: 0.2px;
-}
-
+/* Section titles */
 .sectionTitle {
     display: flex;
     align-items: center;
@@ -129,20 +140,7 @@ a {
     font-weight: 500;
 }
 
-.shell {
-    max-width: 500px;
-    width: 100%;
-    margin: 0 auto;
-    padding: 0 15px;
-}
-
-.roundedFrame {
-    border-radius: 26px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(255, 255, 255, 0.02);
-    overflow: hidden;
-}
-
+/* Game cards */
 .gameCard {
     width: 220px;
     border-radius: 22px;
@@ -177,42 +175,35 @@ a {
     border-radius: 999px;
     font-size: 12px;
     letter-spacing: 0.2px;
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
-    font-weight: 600
+    font-weight: 600;
 }
 
+/* Badge colors + always-on glow */
 .badge-exclusive .gameBadge {
     color: #fff;
     background: rgba(255, 122, 0, 0.95);
-    box-shadow:
-        0 0 10px rgba(255, 122, 0, 0.65),
-        0 0 18px rgba(255, 122, 0, 0.35);
+    box-shadow: 0 0 10px rgba(255, 122, 0, 0.65), 0 0 18px rgba(255, 122, 0, 0.35);
 }
 
 .badge-new .gameBadge {
     color: #001214;
     background: rgba(0, 255, 204, 0.92);
-    box-shadow:
-        0 0 10px rgba(0, 255, 204, 0.6),
-        0 0 18px rgba(0, 255, 204, 0.35);
+    box-shadow: 0 0 10px rgba(0, 255, 204, 0.6), 0 0 18px rgba(0, 255, 204, 0.35);
 }
 
 .badge-best .gameBadge {
     color: #101010;
     background: rgba(255, 215, 0, 0.95);
-    box-shadow:
-        0 0 10px rgba(255, 215, 0, 0.6),
-        0 0 18px rgba(255, 215, 0, 0.35);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.6), 0 0 18px rgba(255, 215, 0, 0.35);
 }
 
 .badge-rtp97 .gameBadge {
     color: #fff;
     background: rgba(60, 150, 255, 0.95);
-    box-shadow:
-        0 0 10px rgba(60, 150, 255, 0.6),
-        0 0 18px rgba(60, 150, 255, 0.35);
+    box-shadow: 0 0 10px rgba(60, 150, 255, 0.6), 0 0 18px rgba(60, 150, 255, 0.35);
 }
 
+/* Card border color on hover (matches badge) */
 .badge-exclusive:hover {
     border-color: rgba(255, 122, 0, 0.95);
 }
@@ -275,13 +266,7 @@ a {
     transform: scale(1.03);
 }
 
-.gameHeader {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 6px 2px 12px;
-}
-
+/* Shared buttons */
 .btn {
     border: 1px solid rgba(255, 255, 255, 0.14);
     background: rgba(255, 255, 255, 0.06);
@@ -297,28 +282,10 @@ a {
     border-color: rgba(255, 255, 255, 0.2);
 }
 
-.iframeBox {
-    flex: 1;
-    width: 100%;
-    height: 100%;
-    border-radius: 18px;
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    background: #0f1012;
-    aspect-ratio: 9 / 16;
-}
-
-.iframeBox iframe {
-    width: 100%;
-    height: 100%;
-    border: 0;
-}
-
 /* Game page: no scrolling, iframe fills remaining viewport */
 .gamePage {
     height: 100vh;
     height: 100dvh;
-    /* better on mobile webviews */
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -336,7 +303,6 @@ a {
 .gameIframeArea {
     flex: 1 1 auto;
     min-height: 0;
-    /* important: lets iframe shrink correctly */
     position: relative;
     overflow: hidden;
     background: #0f1012;

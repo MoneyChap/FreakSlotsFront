@@ -36,39 +36,29 @@ export default function HomePage() {
     return (
         <div className="page">
             <div className="topbar">
-                {/* LEFT: Online status */}
-                <div className="topbarLeft">
-                    <div className="statusPill">
+                <div className="topbarPill">
+                    <div className="topbarStatus">
                         <span className="statusDot" />
-                        <span>Online</span>
+                        <span className="statusText">Online</span>
                     </div>
-                </div>
 
-                {/* RIGHT: User info */}
-                <div className="topbarRight">
-                    {tgUser ? (
-                        <div className="userPill">
-                            <div className="userName">{tgUser.name}</div>
+                    <div className="topbarDivider" />
 
-                            {tgUser.photoUrl ? (
-                                <img
-                                    className="userAvatar"
-                                    src={tgUser.photoUrl}
-                                    alt={tgUser.name}
-                                />
-                            ) : (
-                                <div className="userAvatar userAvatarFallback">
-                                    {(tgUser.firstName?.[0] || "U").toUpperCase()}
-                                    {(tgUser.lastName?.[0] || "").toUpperCase()}
-                                </div>
-                            )}
+                    <div className="topbarUser">
+                        <div className="userName">
+                            {tgUser ? tgUser.name : "Guest"}
                         </div>
-                    ) : (
-                        <div className="userPill">
-                            <div className="userName" style={{ opacity: 0.7 }}>Guest</div>
-                            <div className="userAvatar userAvatarFallback">G</div>
-                        </div>
-                    )}
+
+                        {tgUser?.photoUrl ? (
+                            <img className="userAvatar" src={tgUser.photoUrl} alt={tgUser.name} />
+                        ) : (
+                            <div className="userAvatar userAvatarFallback">
+                                {tgUser
+                                    ? `${(tgUser.firstName?.[0] || "U").toUpperCase()}${(tgUser.lastName?.[0] || "").toUpperCase()}`
+                                    : "G"}
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
 
