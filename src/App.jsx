@@ -4,13 +4,15 @@ import {
   Routes,
   Route,
   Outlet,
-  useLocation,
   useNavigate,
   useMatch,
 } from "react-router-dom";
 
 import HomePage from "./pages/HomePage.jsx";
 import GamePage from "./pages/GamePage.jsx";
+import CasinosPage from "./pages/CasinosPage.jsx";
+import ProfilePage from "./pages/ProfilePage.jsx";
+import BottomNav from "./components/BottomNav.jsx";
 import { initTelegramUi } from "./lib/telegram.js";
 
 function TelegramBackButtonController() {
@@ -18,24 +20,17 @@ function TelegramBackButtonController() {
   const isGamePage = useMatch("/game/:id");
 
   const onBack = useCallback(() => {
-    // If you want “back to home” always:
     navigate("/", { replace: true });
-
-    // If you want real history back instead, use:
-    // navigate(-1);
   }, [navigate]);
 
   useEffect(() => {
     const tg = window.Telegram?.WebApp;
-
-    // If this is falsy in Telegram, the SDK is not initialized/loaded correctly.
     if (!tg?.BackButton) return;
 
-    // Remove our handler first (important when effects re-run)
     tg.BackButton.offClick(onBack);
 
     if (isGamePage) {
-      tg.BackButton.show();      // This is what changes X -> back arrow in Telegram header
+      tg.BackButton.show();
       tg.BackButton.onClick(onBack);
     } else {
       tg.BackButton.hide();
@@ -48,10 +43,13 @@ function TelegramBackButtonController() {
 }
 
 export function AppLayout() {
+  const isGamePage = useMatch("/game/:id");
+
   return (
     <>
       <TelegramBackButtonController />
       <Outlet />
+      {!isGamePage && <BottomNav />}
     </>
   );
 }
@@ -68,6 +66,8 @@ export default function App() {
           <Routes>
             <Route element={<AppLayout />}>
               <Route path="/" element={<HomePage />} />
+              <Route path="/casinos" element={<CasinosPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
               <Route path="/game/:id" element={<GamePage />} />
             </Route>
           </Routes>
