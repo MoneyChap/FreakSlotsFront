@@ -689,11 +689,9 @@ a {
     align-items: center;
     gap: 10px;
     padding: 10px 0;
-    animation: reelSpin 1.05s linear infinite;
+    animation: reelSpin 0.5s linear infinite;
     will-change: transform;
 }
-
-
 
 .reelSpin1 {
     animation-duration: 1.05s;
