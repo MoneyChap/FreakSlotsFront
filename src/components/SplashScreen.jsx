@@ -16,6 +16,14 @@ export default function SplashScreen() {
                                     <span>🎁</span>
                                     <span>🍒</span>
                                     <span>🔔</span>
+                                    <span>🍒</span>
+                                    <span>🔔</span>
+                                    <span>💎</span>
+                                    <span>7</span>
+                                    <span>🍋</span>
+                                    <span>🎁</span>
+                                    <span>🍒</span>
+                                    <span>🔔</span>
                                 </div>
                             </div>
 
@@ -29,11 +37,27 @@ export default function SplashScreen() {
                                     <span>🍒</span>
                                     <span>💎</span>
                                     <span>7</span>
+                                    <span>💎</span>
+                                    <span>7</span>
+                                    <span>🍋</span>
+                                    <span>🔔</span>
+                                    <span>🎁</span>
+                                    <span>🍒</span>
+                                    <span>💎</span>
+                                    <span>7</span>
                                 </div>
                             </div>
 
                             <div className="reel">
                                 <div className="reelTrack reelSpin3">
+                                    <span>🍋</span>
+                                    <span>🍒</span>
+                                    <span>7</span>
+                                    <span>💎</span>
+                                    <span>🎁</span>
+                                    <span>🔔</span>
+                                    <span>🍋</span>
+                                    <span>🍒</span>
                                     <span>🍋</span>
                                     <span>🍒</span>
                                     <span>7</span>
