@@ -811,19 +811,6 @@ a {
     box-shadow: 0 0 12px rgba(255, 122, 0, 0.55);
 }
 
-.promoCardGlow {
-    box-shadow:
-        0 10px 26px rgba(0, 0, 0, 0.35),
-        0 0 22px color-mix(in srgb, var(--promoGlow, #ff7a00) 55%, transparent);
-    border-color: color-mix(in srgb, var(--promoGlow, #ff7a00) 28%, rgba(255, 255, 255, 0.10));
-}
-
-.promoCardGlow .promoGlow {
-    background:
-        radial-gradient(circle at 22% 18%, color-mix(in srgb, var(--promoGlow, #ff7a00) 35%, transparent), transparent 55%),
-        radial-gradient(circle at 82% 72%, rgba(60, 150, 255, 0.14), transparent 50%);
-}
-
 
 
 .casinosGrid {
