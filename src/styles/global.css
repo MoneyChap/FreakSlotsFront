@@ -753,3 +753,289 @@ a {
         transform: translateX(220%);
     }
 }
+
+/* Promo carousel (top) */
+.promoCarousel {
+    margin: 6px 0 12px;
+    padding-bottom: 20px;
+}
+
+.promoSwiper {
+    padding-bottom: 30px;
+    padding-top: 30px;
+}
+
+.promoCardFull {
+    width: 100%;
+    display: block;
+}
+
+.promoCard {
+    width: 100%;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
+}
+
+.promoImg {
+    width: 100%;
+    height: cas300px;
+    object-fit: cover;
+    display: block;
+}
+
+.promoCarousel .swiper-pagination {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 5;
+    text-align: center;
+}
+
+.promoCarousel .swiper-pagination-bullet {
+    width: 7px;
+    height: 7px;
+    opacity: 0.35;
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.promoCarousel .swiper-pagination-bullet-active {
+    opacity: 1;
+    background: rgba(255, 122, 0, 0.98);
+    box-shadow: 0 0 12px rgba(255, 122, 0, 0.55);
+}
+
+.promoCardGlow {
+    box-shadow:
+        0 10px 26px rgba(0, 0, 0, 0.35),
+        0 0 22px color-mix(in srgb, var(--promoGlow, #ff7a00) 55%, transparent);
+    border-color: color-mix(in srgb, var(--promoGlow, #ff7a00) 28%, rgba(255, 255, 255, 0.10));
+}
+
+.promoCardGlow .promoGlow {
+    background:
+        radial-gradient(circle at 22% 18%, color-mix(in srgb, var(--promoGlow, #ff7a00) 35%, transparent), transparent 55%),
+        radial-gradient(circle at 82% 72%, rgba(60, 150, 255, 0.14), transparent 50%);
+}
+
+
+
+.casinosGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.casinoCardV2 {
+    border-radius: 26px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+    position: relative;
+}
+
+/* Card hero (upper half) */
+.casinoHero {
+    position: relative;
+    height: 190px;
+    /* feels like ~50% of the card */
+    background: rgba(0, 0, 0, 0.22);
+}
+
+.casinoHeroImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transform: scale(1.02);
+}
+
+.casinoHeroOverlay {
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.55)),
+        radial-gradient(circle at 25% 20%, rgba(255, 255, 255, 0.10), transparent 40%);
+    pointer-events: none;
+}
+
+.casinoHeroTop {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    top: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.casinoPill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(10px);
+}
+
+.casinoPillDot {
+    width: 9px;
+    height: 9px;
+    border-radius: 999px;
+    background: rgba(255, 122, 0, 0.98);
+    box-shadow: 0 0 12px rgba(255, 122, 0, 0.65);
+}
+
+.casinoPillText {
+    font-size: 12px;
+    font-weight: 800;
+    opacity: 0.95;
+}
+
+.casinoRating {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(10px);
+}
+
+.casinoStars {
+    font-size: 12px;
+    letter-spacing: 0.6px;
+    opacity: 0.95;
+}
+
+.casinoRatingNum {
+    font-size: 12px;
+    font-weight: 800;
+    opacity: 0.95;
+}
+
+.casinoHeroTitle {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 14px;
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: 0.2px;
+    text-shadow: 0 10px 24px rgba(0, 0, 0, 0.65);
+}
+
+/* Card info (lower half) */
+.casinoInfo {
+    padding: 14px;
+    position: relative;
+}
+
+.casinoBonusBlock {
+    padding: 12px 12px;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    background: rgba(0, 0, 0, 0.18);
+}
+
+.casinoBonusTitle {
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: 0.2px;
+}
+
+.casinoBonusDetails {
+    margin-top: 6px;
+    font-size: 13px;
+    opacity: 0.8;
+}
+
+.casinoTags {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.casinoTag {
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    opacity: 0.9;
+}
+
+.casinoPlayBtn {
+    margin-top: 12px;
+    width: 100%;
+    height: 48px;
+    border: 0;
+    border-radius: 16px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 800;
+    background: linear-gradient(180deg, #e5661f, #c94c1a);
+    box-shadow: 0 0 22px rgba(201, 76, 26, 0.35);
+    transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
+}
+
+.casinoPlayBtn:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 22px rgba(201, 76, 26, 0.65), 0 12px 26px rgba(0, 0, 0, 0.35);
+    filter: brightness(1.05);
+}
+
+.casinoPlayBtn:active {
+    transform: scale(1.01);
+}
+
+.casinoFootnote {
+    margin-top: 10px;
+    font-size: 12px;
+    opacity: 0.65;
+    text-align: center;
+}
+
+/* Per-casino color themes (subtle gradient tint) */
+.casinoThemeOrange {
+    background:
+        radial-gradient(circle at 20% 10%, rgba(255, 122, 0, 0.16), transparent 55%),
+        rgba(255, 255, 255, 0.05);
+}
+
+.casinoThemeCyan {
+    background:
+        radial-gradient(circle at 80% 10%, rgba(0, 255, 204, 0.14), transparent 55%),
+        rgba(255, 255, 255, 0.05);
+}
+
+.casinoThemePurple {
+    background:
+        radial-gradient(circle at 25% 0%, rgba(168, 85, 247, 0.16), transparent 58%),
+        rgba(255, 255, 255, 0.05);
+}
+
+.casinoThemeGold {
+    background:
+        radial-gradient(circle at 70% 5%, rgba(255, 215, 0, 0.14), transparent 55%),
+        rgba(255, 255, 255, 0.05);
+}
+
+.casinoThemeBlue {
+    background:
+        radial-gradient(circle at 20% 0%, rgba(60, 150, 255, 0.14), transparent 60%),
+        rgba(255, 255, 255, 0.05);
+}

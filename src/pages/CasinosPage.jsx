@@ -1,53 +1,231 @@
 import { useMemo } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination, Autoplay } from "swiper/modules";
+import { useImageGlow } from "../lib/useImageGlow.js";
+import "swiper/css";
+import "swiper/css/pagination";
 
-// Temporary static list. We will replace this with geo-personalized affiliate data.
-const CASINOS = [
-    {
-        id: "casino-1",
-        name: "Example casino",
-        bonus: "Up to 100% bonus",
-        logoUrl: "https://placehold.co/96x96/png?text=C",
-        link: "https://example.com",
-    },
-    {
-        id: "casino-2",
-        name: "Example casino two",
-        bonus: "50 free spins",
-        logoUrl: "https://placehold.co/96x96/png?text=C2",
-        link: "https://example.com",
-    },
-];
+
+function openTgLink(url) {
+    const tg = window.Telegram?.WebApp;
+    if (tg?.openLink) {
+        tg.openLink(url);
+        return;
+    }
+    window.open(url, "_blank", "noopener,noreferrer");
+}
+
+function Stars({ value }) {
+    const v = Math.max(0, Math.min(5, Number(value) || 0));
+    const full = Math.floor(v);
+    const half = v - full >= 0.5;
+    const empty = 5 - full - (half ? 1 : 0);
+
+    return (
+        <span aria-label={`Rating ${v.toFixed(1)} out of 5`} title={`${v.toFixed(1)}/5`}>
+            {"★".repeat(full)}
+            {half ? "½" : ""}
+            {"☆".repeat(empty)}
+        </span>
+    );
+}
+
+function PromoCard({ title, img, url }) {
+    const glow = useImageGlow(img);
+
+    return (
+        <button
+            type="button"
+            className="promoCard promoCardFull promoCardGlow"
+            style={{ "--promoGlow": glow }}
+            onClick={() => openTgLink(url)}
+            aria-label={title}
+        >
+            <img className="promoImg" src={img} alt={title} />
+            <div className="promoGlow" />
+        </button>
+    );
+}
+
 
 export default function CasinosPage() {
-    const casinos = useMemo(() => CASINOS, []);
+    const promos = useMemo(
+        () => [
+            {
+                id: "promo-1",
+                title: "Vulkan Vegas",
+                img: "/promos/vulkan.jpg",
+                url: "https://example.com",
+            },
+            {
+                id: "promo-2",
+                title: "Royal Spin",
+                img: "/promos/verde.jpg",
+                url: "https://example.com",
+            },
+            {
+                id: "promo-3",
+                title: "Nova Casino",
+                img: "/promos/gangsta.jpg",
+                url: "https://example.com",
+            },
+        ],
+        []
+    );
+
+    const casinos = useMemo(
+        () => [
+            {
+                id: "royal-spin",
+                name: "Royal Spin",
+                heroUrl:
+                    "logos/2026-01-10 20.15.21.jpg",
+                rating: 4.7,
+                bonusTitle: "100% up to €500",
+                bonusDetails: "Plus 200 free spins",
+                tags: ["Fast payouts", "Mobile"],
+                playUrl: "https://example.com",
+                theme: "casinoThemeOrange",
+            },
+            {
+                id: "nova-casino",
+                name: "Nova Casino",
+                heroUrl:
+                    "/logos/HitNSpin logo 500x500 black_500-500_696295fbd01fd.png",
+                rating: 4.6,
+                bonusTitle: "150 free spins",
+                bonusDetails: "No deposit for new users",
+                tags: ["No deposit", "Slots"],
+                playUrl: "https://example.com",
+                theme: "casinoThemeCyan",
+            },
+            {
+                id: "orbit-bets",
+                name: "Orbit Bets",
+                heroUrl:
+                    "/logos/Logo Verde black Background_500-500_696295a4d27f9.png",
+                rating: 4.5,
+                bonusTitle: "50% up to €300",
+                bonusDetails: "Weekly cashback 10%",
+                tags: ["Cashback", "Live"],
+                playUrl: "https://example.com",
+                theme: "casinoThemePurple",
+            },
+            {
+                id: "golden-reels",
+                name: "Golden Reels",
+                heroUrl:
+                    "/logos/megapari_logo.jpeg",
+                rating: 4.4,
+                bonusTitle: "20 free spins",
+                bonusDetails: "Instant signup bonus",
+                tags: ["Beginner friendly"],
+                playUrl: "https://example.com",
+                theme: "casinoThemeGold",
+            },
+            {
+                id: "neon-win",
+                name: "Neon Win",
+                heroUrl:
+                    "logos/Slotoro logo 500 dark white bg_500-500_696296183426c.png",
+                rating: 4.3,
+                bonusTitle: "200% up to €1,000",
+                bonusDetails: "VIP rewards available",
+                tags: ["VIP", "High limits"],
+                playUrl: "https://example.com",
+                theme: "casinoThemeBlue",
+            },
+            {
+                id: "neon-win",
+                name: "Neon Win",
+                heroUrl:
+                    "/logos/horizonlinerp_1705144421_63.png",
+                rating: 4.3,
+                bonusTitle: "200% up to €1,000",
+                bonusDetails: "VIP rewards available",
+                tags: ["VIP", "High limits"],
+                playUrl: "https://example.com",
+                theme: "casinoThemeBlue",
+            },
+        ],
+        []
+    );
 
     return (
         <div className="page">
-            <div className="sectionTitle" style={{ marginTop: 6 }}>
-                <span>🏛️</span>
+            <div className="sectionTitle" style={{ marginTop: 10 }}>
+                <span>🎰</span>
                 <span>Casinos</span>
             </div>
 
-            <div className="casinosHint">
-                Casino offers will be personalized for your location.
+            <div className="promoCarousel promoCarouselFullBleed">
+                <Swiper
+                    className="promoSwiper"
+                    modules={[Pagination, Autoplay]}
+                    slidesPerView={1}
+                    spaceBetween={0}
+                    loop={true}
+                    pagination={{ clickable: true }}
+                    autoplay={{ delay: 5000, disableOnInteraction: false }}
+                >
+                    {promos.map((p) => (
+                        <SwiperSlide key={p.id}>
+                            <PromoCard title={p.title} img={p.img} url={p.url} />
+                        </SwiperSlide>
+                    ))}
+                </Swiper>
             </div>
 
-            <div className="casinosList">
+            <div className="casinosGrid">
                 {casinos.map((c) => (
-                    <a
-                        key={c.id}
-                        className="casinoCard"
-                        href={c.link}
-                        target="_blank"
-                        rel="noreferrer"
-                    >
-                        <img className="casinoLogo" src={c.logoUrl} alt={c.name} />
-                        <div className="casinoBody">
-                            <div className="casinoName">{c.name}</div>
-                            <div className="casinoBonus">{c.bonus}</div>
-                            <div className="casinoCta">Open casino</div>
+                    <div key={c.id} className={`casinoCardV2 ${c.theme}`}>
+                        <div className="casinoHero">
+                            <img className="casinoHeroImg" src={c.heroUrl} alt={c.name} />
+                            <div className="casinoHeroOverlay" />
+
+                            <div className="casinoHeroTop">
+                                <div className="casinoPill">
+                                    <span className="casinoPillDot" />
+                                    <span className="casinoPillText">Hot bonus</span>
+                                </div>
+
+                                <div className="casinoRating">
+                                    <span className="casinoStars">
+                                        <Stars value={c.rating} />
+                                    </span>
+                                    <span className="casinoRatingNum">{Number(c.rating).toFixed(1)}</span>
+                                </div>
+                            </div>
+
+                            <div className="casinoHeroTitle">{c.name}</div>
                         </div>
-                    </a>
+
+                        <div className="casinoInfo">
+                            <div className="casinoBonusBlock">
+                                <div className="casinoBonusTitle">{c.bonusTitle}</div>
+                                <div className="casinoBonusDetails">{c.bonusDetails}</div>
+                            </div>
+
+                            {Array.isArray(c.tags) && c.tags.length ? (
+                                <div className="casinoTags">
+                                    {c.tags.slice(0, 3).map((t) => (
+                                        <span key={t} className="casinoTag">
+                                            {t}
+                                        </span>
+                                    ))}
+                                </div>
+                            ) : null}
+
+                            <button
+                                type="button"
+                                className="casinoPlayBtn"
+                                onClick={() => openTgLink(c.playUrl)}
+                            >
+                                Play
+                            </button>
+
+                        </div>
+                    </div>
                 ))}
             </div>
         </div>
