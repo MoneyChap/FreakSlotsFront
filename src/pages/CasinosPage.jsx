@@ -76,10 +76,10 @@ export default function CasinosPage() {
     const casinos = useMemo(
         () => [
             {
-                id: "royal-spin",
-                name: "Royal Spin",
+                id: "melbet",
+                name: "MELBET",
                 heroUrl:
-                    "logos/2026-01-10 20.15.21.jpg",
+                    "logos/melbet.png",
                 rating: 4.7,
                 bonusTitle: "100% up to €500",
                 bonusDetails: "Plus 200 free spins",
@@ -88,10 +88,10 @@ export default function CasinosPage() {
                 theme: "casinoThemeOrange",
             },
             {
-                id: "nova-casino",
-                name: "Nova Casino",
+                id: "hitnspin",
+                name: "Hit'N'Spin",
                 heroUrl:
-                    "/logos/HitNSpin logo 500x500 black_500-500_696295fbd01fd.png",
+                    "/logos/hitnspin.png",
                 rating: 4.6,
                 bonusTitle: "150 free spins",
                 bonusDetails: "No deposit for new users",
@@ -100,10 +100,10 @@ export default function CasinosPage() {
                 theme: "casinoThemeCyan",
             },
             {
-                id: "orbit-bets",
-                name: "Orbit Bets",
+                id: "verde-casino",
+                name: "Verde Casino",
                 heroUrl:
-                    "/logos/Logo Verde black Background_500-500_696295a4d27f9.png",
+                    "/logos/verde.png",
                 rating: 4.5,
                 bonusTitle: "50% up to €300",
                 bonusDetails: "Weekly cashback 10%",
@@ -112,10 +112,10 @@ export default function CasinosPage() {
                 theme: "casinoThemePurple",
             },
             {
-                id: "golden-reels",
-                name: "Golden Reels",
+                id: "mega-pari",
+                name: "Mega Pari",
                 heroUrl:
-                    "/logos/megapari_logo.jpeg",
+                    "/logos/megapari.png",
                 rating: 4.4,
                 bonusTitle: "20 free spins",
                 bonusDetails: "Instant signup bonus",
@@ -124,10 +124,10 @@ export default function CasinosPage() {
                 theme: "casinoThemeGold",
             },
             {
-                id: "neon-win",
-                name: "Neon Win",
+                id: "slotoro",
+                name: "Slotoro",
                 heroUrl:
-                    "logos/Slotoro logo 500 dark white bg_500-500_696296183426c.png",
+                    "logos/slotoro.png",
                 rating: 4.3,
                 bonusTitle: "200% up to €1,000",
                 bonusDetails: "VIP rewards available",
@@ -136,10 +136,10 @@ export default function CasinosPage() {
                 theme: "casinoThemeBlue",
             },
             {
-                id: "neon-win",
-                name: "Neon Win",
+                id: "1-win",
+                name: "1Win",
                 heroUrl:
-                    "/logos/horizonlinerp_1705144421_63.png",
+                    "/logos/1win.png",
                 rating: 4.3,
                 bonusTitle: "200% up to €1,000",
                 bonusDetails: "VIP rewards available",
@@ -152,7 +152,7 @@ export default function CasinosPage() {
     );
 
     return (
-        <div className="page" style={{paddingLeft: 10, paddingRight: 10}}>
+        <div className="page" style={{ paddingLeft: 10, paddingRight: 10 }}>
             <div className="sectionTitle" style={{ marginTop: 10 }}>
                 <span>🎰</span>
                 <span>Casinos</span>
