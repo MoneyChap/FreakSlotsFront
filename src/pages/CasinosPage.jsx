@@ -152,7 +152,7 @@ export default function CasinosPage() {
     );
 
     return (
-        <div className="page" style={{paddingLeft: 30, paddingRight: 30}}>
+        <div className="page" style={{paddingLeft: 10, paddingRight: 10}}>
             <div className="sectionTitle" style={{ marginTop: 10 }}>
                 <span>🎰</span>
                 <span>Casinos</span>
