@@ -147,6 +147,18 @@ export default function CasinosPage() {
                 playUrl: "https://example.com",
                 theme: "casinoThemeBlue",
             },
+            {
+                id: "Vulkan",
+                name: "Vulkan Spiele",
+                heroUrl:
+                    "/logos/vulkan.png",
+                rating: 4.3,
+                bonusTitle: "200% up to €1,000",
+                bonusDetails: "VIP rewards available",
+                tags: ["VIP", "High limits"],
+                playUrl: "https://example.com",
+                theme: "casinoThemeBlue",
+            },
         ],
         []
     );
