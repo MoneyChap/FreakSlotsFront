@@ -1124,3 +1124,13 @@ a {
         transform: scale(1.05);
     }
 }
+
+.swiper,
+.swiper-wrapper {
+    transform: translateZ(0);
+    will-change: transform;
+}
+
+.swiper-slide {
+    transform: translateZ(0);
+}

@@ -25,6 +25,7 @@ export default function GameCarousel({ games, sectionId, onPlay }) {
     return (
         <Swiper
             className="gameCarousel"
+            watchSlidesProgress
             spaceBetween={14}
             slidesPerView={"auto"}
             style={{ paddingLeft: 12, paddingRight: 12, paddingBottom: 6, paddingTop: 4 }}
@@ -33,6 +34,10 @@ export default function GameCarousel({ games, sectionId, onPlay }) {
             speed={450}
             resistanceRatio={0.50}
             touchStartPreventDefault={false}
+            passiveListeners={true}
+            observer={true}
+            observeParents={true}
+            threshold={6}
         >
             {games.map((g) => {
                 const { text, variant } = getBadge(sectionId, g);
