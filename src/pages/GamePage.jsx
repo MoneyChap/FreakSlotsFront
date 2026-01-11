@@ -91,7 +91,7 @@ export default function GamePage() {
         <div className="gamePage">
             <div className="gameTopbar">
                 <button className="realPlayBtn">
-                    <span className="realPlayLabel">🎰 Play Real Slots 🎰</span>
+                    <span className="realPlayLabel">Play Real Slots 🎰</span>
                 </button>
             </div>
 
