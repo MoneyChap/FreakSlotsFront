@@ -27,13 +27,18 @@ export default function GameCarousel({ games, sectionId, onPlay }) {
             className="gameCarousel"
             slidesPerView="auto"
             spaceBetween={14}
-            speed={280}
+            speed={320}
+            threshold={8}
             resistance={false}
             resistanceRatio={0}
-            threshold={10}
             touchStartPreventDefault={false}
             touchMoveStopPropagation={true}
-            freeMode={{ enabled: true, momentum: true, sticky: true, momentumRatio: 0.9 }}
+            followFinger={true}
+            longSwipes={true}
+            longSwipesRatio={0.25}
+            shortSwipes={true}
+            // IMPORTANT: remove freeMode
+            freeMode={false}
             watchSlidesProgress
             observer
             observeParents
