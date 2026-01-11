@@ -28,6 +28,7 @@ export default function GameCarousel({ games, sectionId, onPlay }) {
             slidesPerView="auto"
             spaceBetween={14}
             // feel
+            modules={[FreeMode]}
             freeMode={{
                 enabled: true,
                 sticky: false,          // IMPORTANT: no snapping
