@@ -27,22 +27,32 @@ export default function GameCarousel({ games, sectionId, onPlay }) {
             className="gameCarousel"
             slidesPerView="auto"
             spaceBetween={14}
-            speed={320}
-            threshold={8}
+            // feel
+            freeMode={{
+                enabled: true,
+                sticky: false,          // IMPORTANT: no snapping
+                momentum: true,
+                momentumRatio: 1.05,    // a bit more glide
+                momentumBounce: false,  // IMPORTANT: removes reverse “bounce”
+                minimumVelocity: 0.02,
+            }}
+            // stop the “reverse nudge”
             resistance={false}
             resistanceRatio={0}
+            // touch behavior
+            followFinger={true}
+            threshold={2}                  // makes it responsive but not twitchy
             touchStartPreventDefault={false}
             touchMoveStopPropagation={true}
-            followFinger={true}
-            longSwipes={true}
-            longSwipesRatio={0.25}
-            shortSwipes={true}
-            // IMPORTANT: remove freeMode
-            freeMode={false}
+            preventClicks={true}
+            preventClicksPropagation={true}
+            // stability
             watchSlidesProgress
             observer
             observeParents
             passiveListeners
+            // keep default speed irrelevant in freeMode, but harmless
+            speed={0}
         >
             {games.map((g) => {
                 const { text, variant } = getBadge(sectionId, g);
