@@ -1113,3 +1113,14 @@ a {
         transform: scale(0.9);
     }
 }
+
+@media (hover: hover) and (pointer: fine) {
+    .gameCard:hover {
+        transform: translateY(-2px);
+        border-color: #FF6B35;
+    }
+
+    .gameCardButton:hover {
+        transform: scale(1.05);
+    }
+}
