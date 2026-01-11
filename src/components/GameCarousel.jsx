@@ -27,6 +27,11 @@ export default function GameCarousel({ games, sectionId, onPlay }) {
             spaceBetween={14}
             slidesPerView={"auto"}
             style={{ paddingLeft: 12, paddingRight: 12, paddingBottom: 6, paddingTop: 4 }}
+            modules={[FreeMode]}
+            freeMode={{ enabled: true, sticky: false, momentumBounce: false }}
+            speed={450}
+            resistanceRatio={0.85}
+            touchStartPreventDefault={false}
         >
             {games.map((g) => {
                 const { text, variant } = getBadge(sectionId, g);
