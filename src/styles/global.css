@@ -181,21 +181,21 @@ a {
 
 /* Badge colors + always-on glow */
 .badge-exclusive .gameBadge {
+    background: linear-gradient(135deg, #FF6B35, #FF4500);
+    box-shadow: 0 2px 8px rgba(255, 107, 53, 0.4);
     color: #fff;
-    background: rgba(255, 122, 0, 0.95);
-    box-shadow: 0 0 10px rgba(255, 122, 0, 0.65), 0 0 18px rgba(255, 122, 0, 0.35);
 }
 
 .badge-new .gameBadge {
+    background: linear-gradient(135deg, #00D9A3, #00B87C);
+    box-shadow: 0 2px 8px rgba(0, 217, 163, 0.4);
     color: #001214;
-    background: rgba(0, 255, 204, 0.92);
-    box-shadow: 0 0 10px rgba(0, 255, 204, 0.6), 0 0 18px rgba(0, 255, 204, 0.35);
 }
 
 .badge-best .gameBadge {
-    color: #101010;
-    background: rgba(255, 215, 0, 0.95);
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.6), 0 0 18px rgba(255, 215, 0, 0.35);
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: #000;
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
 }
 
 .badge-rtp97 .gameBadge {
@@ -204,21 +204,8 @@ a {
     box-shadow: 0 0 10px rgba(60, 150, 255, 0.6), 0 0 18px rgba(60, 150, 255, 0.35);
 }
 
-/* Card border color on hover (matches badge) */
-.badge-exclusive:hover {
-    border-color: rgba(255, 122, 0, 0.95);
-}
-
-.badge-new:hover {
-    border-color: rgba(120, 255, 255, 0.9);
-}
-
-.badge-best:hover {
-    border-color: rgba(255, 215, 0, 0.95);
-}
-
-.badge-rtp97:hover {
-    border-color: rgba(60, 150, 255, 0.95);
+.gameCard:hover {
+    border-color: #FF6B35;
 }
 
 .gameCardBody {
@@ -253,7 +240,7 @@ a {
     font-weight: 600;
     color: #fff;
     cursor: pointer;
-    background: linear-gradient(180deg, #e5661f, #c94c1a);
+    background: linear-gradient(135deg, #FF6B35, #FF4500);
     transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
 }
 
@@ -566,7 +553,7 @@ a {
     color: #fff;
     font-size: 20px;
     font-weight: 700;
-    background: linear-gradient(180deg, #e5661f, #c94c1a);
+    background: linear-gradient(135deg, #FF6B35, #FF4500);
     box-shadow: 0 0 22px rgba(201, 76, 26, 0.35);
 }
 
@@ -974,7 +961,7 @@ a {
     color: #fff;
     font-size: 16px;
     font-weight: 800;
-    background: linear-gradient(180deg, #e5661f, #c94c1a);
+    background: linear-gradient(135deg, #FF6B35, #FF4500);
     box-shadow: 0 0 22px rgba(201, 76, 26, 0.35);
     transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
 }

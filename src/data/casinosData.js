@@ -122,9 +122,9 @@ export const CASINOS = [
         },
 
         geo: {
-            worldwide: false,
-            includeCountries: ["TR", "IN"],
-            includeRegions: ["AFRICA", "ASIA", "MIDDLE_EAST"],
+            worldwide: true,
+            includeCountries: [],
+            includeRegions: [],
             excludeCountries: [],
         },
     },
@@ -245,8 +245,6 @@ export const CASINOS = [
         },
     },
 
-    // You included MELBET in your object, but you did not provide GEO mapping for it yet.
-    // For safety it is set to worldwide: false (hidden) until you confirm GEOs + link.
     {
         id: "melbet",
         name: "MELBET",
@@ -258,11 +256,11 @@ export const CASINOS = [
         theme: "casinoThemeOrange",
 
         links: {
-            default: "https://example.com",
+            default: "https://refpa3665.com/L?tag=d_652383m_45415c_FreakSlots&site=652383&ad=45415&r=registration",
         },
 
         geo: {
-            worldwide: false,
+            worldwide: true,
             includeCountries: [],
             includeRegions: [],
             excludeCountries: [],

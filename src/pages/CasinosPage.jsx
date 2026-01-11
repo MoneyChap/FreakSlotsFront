@@ -6,29 +6,7 @@ import { getVisibleCasinosForCountry } from "../data/casinosData.js";
 import "swiper/css";
 import "swiper/css/pagination";
 
-
 const API_BASE = import.meta.env.VITE_API_BASE;
-
-function readGeoCache() {
-    try {
-        const raw = localStorage.getItem("fs_geo_v1");
-        if (!raw) return null;
-        const v = JSON.parse(raw);
-        if (!v?.countryCode) return null;
-        if (Date.now() - (v.ts || 0) > 24 * 60 * 60 * 1000) return null;
-        return v;
-    } catch {
-        return null;
-    }
-}
-
-function writeGeoCache(payload) {
-    try {
-        localStorage.setItem("fs_geo_v1", JSON.stringify({ ts: Date.now(), ...payload }));
-    } catch {
-        // ignore
-    }
-}
 
 function openTgLink(url) {
     const tg = window.Telegram?.WebApp;
@@ -71,25 +49,22 @@ function PromoCard({ title, img, url }) {
     );
 }
 
-
 export default function CasinosPage() {
+    const [countryCode, setCountryCode] = useState("");
 
-    const [countryCode, setCountryCode] = useState(() => readGeoCache()?.countryCode || "");
-
+    // No caching: always detect GEO on every app open (page mount)
     useEffect(() => {
-        const cached = readGeoCache();
-        if (cached?.countryCode) return;
-
         let cancelled = false;
 
         async function loadGeo() {
             try {
-                const res = await fetch(`${API_BASE}/api/geo`);
+                const res = await fetch(`${API_BASE}/api/geo`, { cache: "no-store" });
                 if (!res.ok) return;
+
                 const data = await res.json();
                 const cc = String(data?.countryCode || "").toUpperCase();
                 if (!cc) return;
-                writeGeoCache({ countryCode: cc, label: data?.label || "" });
+
                 if (!cancelled) setCountryCode(cc);
             } catch {
                 // ignore
@@ -97,6 +72,7 @@ export default function CasinosPage() {
         }
 
         loadGeo();
+
         return () => {
             cancelled = true;
         };
@@ -127,96 +103,6 @@ export default function CasinosPage() {
         ],
         []
     );
-
-    // const casinos = useMemo(
-    //     () => [
-    //         {
-    //             id: "melbet",
-    //             name: "MELBET",
-    //             heroUrl:
-    //                 "logos/melbet.png",
-    //             rating: 4.7,
-    //             bonusTitle: "100% up to €500",
-    //             bonusDetails: "Plus 200 free spins",
-    //             tags: ["Fast payouts", "Mobile"],
-    //             playUrl: "https://example.com",
-    //             theme: "casinoThemeOrange",
-    //         },
-    //         {
-    //             id: "hitnspin",
-    //             name: "Hit'N'Spin",
-    //             heroUrl:
-    //                 "/logos/hitnspin.png",
-    //             rating: 4.6,
-    //             bonusTitle: "150 free spins",
-    //             bonusDetails: "No deposit for new users",
-    //             tags: ["No deposit", "Slots"],
-    //             playUrl: "https://example.com",
-    //             theme: "casinoThemeCyan",
-    //         },
-    //         {
-    //             id: "verde-casino",
-    //             name: "Verde Casino",
-    //             heroUrl:
-    //                 "/logos/verde.png",
-    //             rating: 4.5,
-    //             bonusTitle: "50% up to €300",
-    //             bonusDetails: "Weekly cashback 10%",
-    //             tags: ["Cashback", "Live"],
-    //             playUrl: "https://example.com",
-    //             theme: "casinoThemePurple",
-    //         },
-    //         {
-    //             id: "mega-pari",
-    //             name: "Mega Pari",
-    //             heroUrl:
-    //                 "/logos/megapari.png",
-    //             rating: 4.4,
-    //             bonusTitle: "20 free spins",
-    //             bonusDetails: "Instant signup bonus",
-    //             tags: ["Beginner friendly"],
-    //             playUrl: "https://example.com",
-    //             theme: "casinoThemeGold",
-    //         },
-    //         {
-    //             id: "slotoro",
-    //             name: "Slotoro",
-    //             heroUrl:
-    //                 "logos/slotoro.png",
-    //             rating: 4.3,
-    //             bonusTitle: "200% up to €1,000",
-    //             bonusDetails: "VIP rewards available",
-    //             tags: ["VIP", "High limits"],
-    //             playUrl: "https://example.com",
-    //             theme: "casinoThemeBlue",
-    //         },
-    //         {
-    //             id: "1-win",
-    //             name: "1Win",
-    //             heroUrl:
-    //                 "/logos/1win.png",
-    //             rating: 4.3,
-    //             bonusTitle: "200% up to €1,000",
-    //             bonusDetails: "VIP rewards available",
-    //             tags: ["VIP", "High limits"],
-    //             playUrl: "https://example.com",
-    //             theme: "casinoThemeBlue",
-    //         },
-    //         {
-    //             id: "Vulkan",
-    //             name: "Vulkan Spiele",
-    //             heroUrl:
-    //                 "/logos/vulkan.png",
-    //             rating: 4.3,
-    //             bonusTitle: "200% up to €1,000",
-    //             bonusDetails: "VIP rewards available",
-    //             tags: ["VIP", "High limits"],
-    //             playUrl: "https://example.com",
-    //             theme: "casinoThemeBlue",
-    //         },
-    //     ],
-    //     []
-    // );
 
     return (
         <div className="page" style={{ paddingLeft: 10, paddingRight: 10 }}>
@@ -260,7 +146,9 @@ export default function CasinosPage() {
                                     <span className="casinoStars">
                                         <Stars value={c.rating} />
                                     </span>
-                                    <span className="casinoRatingNum">{Number(c.rating).toFixed(1)}</span>
+                                    <span className="casinoRatingNum">
+                                        {Number(c.rating).toFixed(1)}
+                                    </span>
                                 </div>
                             </div>
 
@@ -287,10 +175,11 @@ export default function CasinosPage() {
                                 type="button"
                                 className="casinoPlayBtn"
                                 onClick={() => openTgLink(c.playUrl)}
+                                disabled={!c.playUrl}
+                                title={!c.playUrl ? "Link unavailable" : undefined}
                             >
                                 Play
                             </button>
-
                         </div>
                     </div>
                 ))}
