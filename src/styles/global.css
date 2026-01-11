@@ -151,10 +151,6 @@ a {
     transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
 }
 
-.gameCard:hover {
-    transform: translateY(-2px);
-}
-
 .gameCardMedia {
     position: relative;
     height: 150px;
@@ -202,10 +198,6 @@ a {
     color: #fff;
     background: rgba(60, 150, 255, 0.95);
     box-shadow: 0 0 10px rgba(60, 150, 255, 0.6), 0 0 18px rgba(60, 150, 255, 0.35);
-}
-
-.gameCard:hover {
-    border-color: #FF6B35;
 }
 
 .gameCardBody {
