@@ -90,16 +90,9 @@ export default function GamePage() {
     return (
         <div className="gamePage">
             <div className="gameTopbar">
-
-                <button
-                    className="btn btnPrimary"
-                    style={{ margin: "0 auto" }}
-                    onClick={() => alert("Coming soon")}
-                >
-                    Play Real Slots
+                <button className="realPlayBtn">
+                    <span className="realPlayLabel">🎰 Play Real Slots 🎰</span>
                 </button>
-
-                <div style={{ width: 60 }} />
             </div>
 
             <div className="gameIframeArea">
