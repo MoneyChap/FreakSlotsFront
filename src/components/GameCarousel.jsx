@@ -31,7 +31,7 @@ export default function GameCarousel({ games, sectionId, onPlay }) {
             modules={[FreeMode]}
             freeMode={{ enabled: true, sticky: false, momentumBounce: false }}
             speed={450}
-            resistanceRatio={0.85}
+            resistanceRatio={0.50}
             touchStartPreventDefault={false}
         >
             {games.map((g) => {
