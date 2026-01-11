@@ -1,4 +1,5 @@
 import { Swiper, SwiperSlide } from "swiper/react";
+import { FreeMode } from "swiper/modules";
 import "swiper/css";
 import GameCard from "./GameCard";
 
