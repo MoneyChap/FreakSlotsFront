@@ -25,6 +25,7 @@ export default function GameCarousel({ games, sectionId, onPlay }) {
     return (
         <Swiper
             className="gameCarousel"
+            style={{paddingTop: 5}}
             slidesPerView="auto"
             spaceBetween={14}
             // feel

@@ -84,7 +84,6 @@ export default function HomePage() {
                         <span>{s.icon}</span>
                         <span>{s.title}</span>
                     </div>
-
                     <GameCarousel
                         games={s.games}
                         sectionId={s.id}
