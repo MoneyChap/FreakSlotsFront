@@ -1109,6 +1109,7 @@ a {
 @media (hover: hover) and (pointer: fine) {
     .gameCard:hover {
         transform: translateY(-2px);
+        border-color: #FF6B35;
     }
 
     .gameCardButton:hover {
