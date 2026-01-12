@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -63,10 +63,11 @@ export default function GamePage() {
         return (
             <div className="gamePage">
                 <div className="gameTopbar">
-                    <button className="btn btnPrimary" style={{ margin: "0 auto" }} disabled>
-                        Play Real Slots
-                    </button>
-                    <div style={{ width: 60 }} />
+                    <Link to={"/casinos"} >
+                        <button className="realPlayBtn">
+                            <span className="realPlayLabel">Play Real Slots 🎰</span>
+                        </button>
+                    </Link>
                 </div>
                 <div style={{ padding: 12, opacity: 0.7 }}>Loading…</div>
             </div>
@@ -77,10 +78,11 @@ export default function GamePage() {
         return (
             <div className="gamePage">
                 <div className="gameTopbar">
-                    <button className="btn btnPrimary" style={{ margin: "0 auto" }} disabled>
-                        Play Real Slots
-                    </button>
-                    <div style={{ width: 60 }} />
+                    <Link to={"/casinos"} >
+                        <button className="realPlayBtn">
+                            <span className="realPlayLabel">Play Real Slots 🎰</span>
+                        </button>
+                    </Link>
                 </div>
                 <div style={{ padding: 12, opacity: 0.7 }}>Game not found</div>
             </div>
@@ -90,9 +92,11 @@ export default function GamePage() {
     return (
         <div className="gamePage">
             <div className="gameTopbar">
-                <button className="realPlayBtn">
-                    <span className="realPlayLabel">Play Real Slots 🎰</span>
-                </button>
+                <Link to={"/casinos"} >
+                    <button className="realPlayBtn">
+                        <span className="realPlayLabel">Play Real Slots 🎰</span>
+                    </button>
+                </Link>
             </div>
 
             <div className="gameIframeArea">
