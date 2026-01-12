@@ -275,6 +275,7 @@ a {
 .gameTopbar {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 10px;
     padding: 6px 12px 10px;
     flex: 0 0 auto;
