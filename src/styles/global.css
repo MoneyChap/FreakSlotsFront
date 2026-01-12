@@ -734,6 +734,48 @@ a {
     }
 }
 
+.casinosHeroZone {
+    position: relative;
+    padding: 28px 10px 34px;
+    margin-bottom: 6px;
+    overflow: hidden;
+}
+
+.casinosHeroContet {
+    width: 100%;
+}
+
+.casinosHeroTitle {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.4px;
+    line-height: 1.05;
+    text-align: center;
+}
+
+.casinosHeroSubtitle {
+    margin-top: 8px;
+    font-size: 14px;
+    opacity: 0.75;
+    text-align: center;
+}
+
+
+.casinosHeroZone::after {
+    content: "";
+    position: absolute;
+    left: 1%;
+    right: 1%;
+    bottom: 20px;
+    height: 2px;
+    background: linear-gradient(90deg,
+            transparent,
+            #FF6B35,
+            transparent);
+}
+
+
+
 /* Promo carousel (top) */
 .promoCarousel {
     margin: 6px 0 12px;

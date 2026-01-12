@@ -106,9 +106,15 @@ export default function CasinosPage() {
 
     return (
         <div className="page" style={{ paddingLeft: 10, paddingRight: 10 }}>
-            <div className="sectionTitle" style={{ marginTop: 10 }}>
-                <span>🎰</span>
-                <span>Casinos</span>
+            <div className="casinosHeroZone">
+                <div className="casinosHeroContent">
+                    <h1 className="casinosHeroTitle">
+                        Top Casinos
+                    </h1>
+                    <p className="casinosHeroSubtitle">
+                        Exclusive bonuses • Fast payouts • Trusted brands
+                    </p>
+                </div>
             </div>
 
             <div className="promoCarousel promoCarouselFullBleed">
