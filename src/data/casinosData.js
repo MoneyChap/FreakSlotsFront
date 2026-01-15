@@ -1,6 +1,5 @@
 // src/data/casinosData.js
 
-// Small helper to normalize country codes.
 function normCC(countryCode) {
     return String(countryCode || "").trim().toUpperCase();
 }
@@ -8,7 +7,6 @@ function normCC(countryCode) {
 /**
  * Region ISO2 sets.
  * Used for rules like: "Africa, Asia, Middle East".
- * If later you want more strict control, we can replace these with your own curated lists.
  */
 const REGION = {
     AFRICA: new Set([
@@ -22,6 +20,14 @@ const REGION = {
     ]),
 };
 
+// If you want to be stricter later, we can curate this list.
+// For now it is practical: "Europe => EUR"
+const EUROPE = new Set([
+    "AL", "AD", "AT", "AX", "BA", "BE", "BG", "BY", "CH", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FO", "FR",
+    "GB", "GE", "GI", "GR", "HR", "HU", "IE", "IM", "IS", "IT", "JE", "LI", "LT", "LU", "LV", "MC", "MD", "ME",
+    "MK", "MT", "NL", "NO", "PL", "PT", "RO", "RS", "RU", "SE", "SI", "SK", "SM", "TR", "UA", "VA",
+]);
+
 function getRegionFlags(countryCode) {
     const cc = normCC(countryCode);
     if (!cc) return { AFRICA: false, ASIA: false, MIDDLE_EAST: false };
@@ -31,6 +37,15 @@ function getRegionFlags(countryCode) {
         ASIA: REGION.ASIA.has(cc),
         MIDDLE_EAST: REGION.MIDDLE_EAST.has(cc),
     };
+}
+
+function getCurrencyGroup(countryCode) {
+    const cc = normCC(countryCode);
+    if (!cc) return "USD";
+    if (cc === "TR") return "TRY";
+    if (cc === "IN") return "INR";
+    if (EUROPE.has(cc)) return "EUR";
+    return "USD";
 }
 
 /**
@@ -65,46 +80,107 @@ export function isCasinoAllowedInCountry(casino, countryCode) {
     return false;
 }
 
+/**
+ * Bonus resolver (NO conversion):
+ * Priority:
+ * 1) bonuses.byCountry[CC] (exact country override)
+ * 2) bonuses.byCurrency[GROUP] (EUR/USD/INR/TRY)
+ * 3) bonuses.default
+ * 4) fallback to bonusTitle/bonusDetails on object
+ */
+function resolveBonus(casino, countryCode) {
+    const cc = normCC(countryCode);
+    const group = getCurrencyGroup(cc);
+    const bonuses = casino.bonuses || null;
+
+    if (!bonuses) {
+        return { bonusTitle: casino.bonusTitle || "", bonusDetails: casino.bonusDetails || "" };
+    }
+
+    const byCountry = bonuses.byCountry || {};
+    const byCurrency = bonuses.byCurrency || {};
+
+    const picked =
+        (cc && byCountry[cc]) ||
+        byCurrency[group] ||
+        bonuses.default ||
+        null;
+
+    return {
+        bonusTitle: picked?.title || "",
+        bonusDetails: picked?.details || "",
+    };
+}
+
+/**
+ * Returns casinos visible for the country.
+ * Also picks:
+ * - correct affiliate link (links[CC] -> links.default)
+ * - correct bonus text (byCountry -> byCurrency -> default)
+ */
 export function getVisibleCasinosForCountry(countryCode) {
     const cc = normCC(countryCode);
 
     return CASINOS
         .filter((c) => isCasinoAllowedInCountry(c, cc))
-        .map((c) => ({
-            ...c,
-            playUrl: c.links?.[cc] || c.links?.default || c.playUrl || null,
-        }))
+        .map((c) => {
+            const { bonusTitle, bonusDetails } = resolveBonus(c, cc);
+            return {
+                ...c,
+                bonusTitle,
+                bonusDetails,
+                playUrl: c.links?.[cc] || c.links?.default || c.playUrl || null,
+            };
+        })
         .filter((c) => Boolean(c.playUrl));
 }
 
-/**
- * Your casino catalog.
- * Notes:
- * - I normalized heroUrl paths to start with "/" (public folder usage).
- * - I added geo rules + affiliate links from your mapping.
- * - For Hit'N'Spin: you wrote "Gergoia" -> using "GE".
- */
 export const CASINOS = [
+    {
+        id: "melbet",
+        name: "MELBET",
+        heroUrl: "/logos/melbet.png",
+        rating: 4.7,
+        tags: ["Fast payouts", "Mobile"],
+        theme: "casinoThemeOrange",
+        links: {
+            default:
+                "https://refpa3665.com/L?tag=d_652383m_45415c_FreakSlots&site=652383&ad=45415&r=registration",
+        },
+        // No conversion: whole-number presets
+        bonuses: {
+            default: { title: "Welcome package up to $1,900 + 290 FS", details: "" },
+            byCountry: {
+                TR: { title: "Welcome package up to 64,750 ₺ + 290 FS", details: "" },
+                IN: { title: "Welcome package up to ₹212,000 + 250 FS", details: "" },
+            },
+            // Optional (if you want Europe to look clean):
+            byCurrency: {
+                EUR: { title: "Welcome package up to €1,900 + 290 FS", details: "" },
+            },
+        },
+        geo: { worldwide: true, includeCountries: [], includeRegions: [], excludeCountries: [] },
+    },
+
     {
         id: "mega-pari",
         name: "Mega Pari",
         heroUrl: "/logos/megapari.png",
         rating: 4.4,
-        bonusTitle: "20 free spins",
-        bonusDetails: "Instant signup bonus",
         tags: ["Beginner friendly"],
         theme: "casinoThemeGold",
-
-        links: {
-            default: "https://freakslots.com/games",
+        links: { default: "https://freakslots.com/games" },
+        bonuses: {
+            default: { title: "Welcome package up to $2,050 + 150 FS", details: "" },
+            byCountry: {
+                TR: { title: "Welcome package up to 64,750 ₺ + 290 FS", details: "" },
+                IN: { title: "Welcome package up to ₹212,000 + 250 FS", details: "" },
+            },
+            byCurrency: {
+                EUR: { title: "Welcome package up to €2,050 + 150 FS", details: "" },
+            },
         },
-
-        geo: {
-            worldwide: true,
-            includeCountries: [],
-            includeRegions: [],
-            excludeCountries: [],
-        },
+        geo: { worldwide: true, includeCountries: [], includeRegions: [], excludeCountries: [] },
     },
 
     {
@@ -112,41 +188,46 @@ export const CASINOS = [
         name: "1Win",
         heroUrl: "/logos/1win.png",
         rating: 4.3,
-        bonusTitle: "200% up to €1,000",
-        bonusDetails: "VIP rewards available",
         tags: ["VIP", "High limits"],
         theme: "casinoThemeBlue",
-
-        links: {
-            default: "https://freakslots.com/xcPj29",
+        links: { default: "https://freakslots.com/xcPj29" },
+        bonuses: {
+            default: { title: "Welcome bonus 500% up to $2,000 on first deposit", details: "" },
+            byCountry: {
+                TR: { title: "First deposit bonus 500% up to 16,600 ₺", details: "" },
+                IN: { title: "Welcome bonus 500% up to ₹80,400 on first deposit", details: "" },
+            },
+            byCurrency: {
+                EUR: { title: "Welcome bonus 500% up to €2,000 on first deposit", details: "" },
+            },
         },
-
-        geo: {
-            worldwide: true,
-            includeCountries: [],
-            includeRegions: [],
-            excludeCountries: [],
-        },
+        geo: { worldwide: true, includeCountries: [], includeRegions: [], excludeCountries: [] },
     },
 
     {
-        id: "hitnspin",
-        name: "Hit'N'Spin",
-        heroUrl: "/logos/hitnspin.png",
-        rating: 4.6,
-        bonusTitle: "150 free spins",
-        bonusDetails: "No deposit for new users",
-        tags: ["No deposit", "Slots"],
-        theme: "casinoThemeCyan",
-
-        links: {
-            default: "https://freakslots.com/kC255k",
+        id: "vulkan",
+        name: "Vulkan Spiele",
+        heroUrl: "/logos/vulkan.png",
+        rating: 4.3,
+        tags: ["VIP", "High limits"],
+        theme: "casinoThemeBlue",
+        links: { default: "https://freakslots.com/x1fXSH" },
+        bonuses: {
+            default: {
+                title: "WELCOME BONUS UP TO €2,000",
+                details: "Up to 450% deposit bonus and up to 250 FD",
+            },
+            byCountry: {},
+            byCurrency: {
+                USD: { title: "WELCOME BONUS UP TO $2,000", details: "Up to 450% deposit bonus and up to 250 FD" },
+                EUR: { title: "WELCOME BONUS UP TO €2,000", details: "Up to 450% deposit bonus and up to 250 FD" },
+            },
         },
-
         geo: {
             worldwide: false,
             includeCountries: [
-                "HU", "RO", "BG", "PT", "DE", "CH", "PL", "IT", "LV", "LT", "EE", "GR", "BE", "LU", "LI", "AT", "DK", "NO", "SE", "GE",
+                "DE", "BE", "LU", "LI", "AT", "DK", "NO", "PL", "LV", "LT", "EE", "SK", "SI", "GR", "FI", "PT", "RO", "BG",
+                "HR", "HU", "BA", "AL", "MK", "ME", "IS", "CA", "IE", "CH", "SE", "GE", "MD",
             ],
             includeRegions: [],
             excludeCountries: [],
@@ -158,15 +239,17 @@ export const CASINOS = [
         name: "Verde Casino",
         heroUrl: "/logos/verde.png",
         rating: 4.5,
-        bonusTitle: "50% up to €300",
-        bonusDetails: "Weekly cashback 10%",
         tags: ["Cashback", "Live"],
         theme: "casinoThemePurple",
-
-        links: {
-            default: "https://freakslots.com/YCb7Mb",
+        links: { default: "https://freakslots.com/YCb7Mb" },
+        bonuses: {
+            default: { title: "Sign up and get a bonus €1,200 + 220 FS", details: "" },
+            byCountry: {},
+            byCurrency: {
+                USD: { title: "Sign up and get a bonus $1,200 + 220 FS", details: "" },
+                EUR: { title: "Sign up and get a bonus €1,200 + 220 FS", details: "" },
+            },
         },
-
         geo: {
             worldwide: false,
             includeCountries: [
@@ -189,130 +272,74 @@ export const CASINOS = [
     },
 
     {
-        id: "slotoro",
-        name: "Slotoro",
-        heroUrl: "/logos/slotoro.png",
-        rating: 4.3,
-        bonusTitle: "200% up to €1,000",
-        bonusDetails: "VIP rewards available",
-        tags: ["VIP", "High limits"],
-        theme: "casinoThemeBlue",
-
-        links: {
-            default: "https://freakslots.com/bT42K2",
-        },
-
-        geo: {
-            worldwide: false,
-            includeCountries: ["PL", "DE"],
-            includeRegions: [],
-            excludeCountries: [],
-        },
-    },
-
-    {
-        id: "vulkan",
-        name: "Vulkan Spiele",
-        heroUrl: "/logos/vulkan.png",
-        rating: 4.3,
-        bonusTitle: "200% up to €1,000",
-        bonusDetails: "VIP rewards available",
-        tags: ["VIP", "High limits"],
-        theme: "casinoThemeBlue",
-
-        links: {
-            default: "https://freakslots.com/x1fXSH",
-        },
-
-        geo: {
-            worldwide: false,
-            includeCountries: [
-                "DE",
-                "BE", "LU", "LI",
-                "AT", "DK", "NO",
-                "PL", "LV", "LT", "EE", "SK", "SI", "GR", "FI",
-                "PT", "RO", "BG",
-                "HR", "HU",
-                "BA", "AL", "MK", "ME",
-                "IS", "CA", "IE",
-                "CH",
-                "SE",
-                "GE",
-                "MD",
-            ],
-            includeRegions: [],
-            excludeCountries: [],
-        },
-    },
-
-    {
-        id: "melbet",
-        name: "MELBET",
-        heroUrl: "/logos/melbet.png",
-        rating: 4.7,
-        bonusTitle: "100% up to €500",
-        bonusDetails: "Plus 200 free spins",
-        tags: ["Fast payouts", "Mobile"],
-        theme: "casinoThemeOrange",
-
-        links: {
-            default: "https://refpa3665.com/L?tag=d_652383m_45415c_FreakSlots&site=652383&ad=45415&r=registration",
-        },
-
-        geo: {
-            worldwide: true,
-            includeCountries: [],
-            includeRegions: [],
-            excludeCountries: [],
-        },
-    },
-    {
         id: "ggbet",
         name: "GGBET",
         heroUrl: "/logos/ggbet.png",
         rating: 4.7,
-        bonusTitle: "100% up to €500",
-        bonusDetails: "Plus 200 free spins",
-        tags: ["Fast payouts", "Mobile"],
+        tags: ["Esports", "Big bonuses"],
         theme: "casinoThemeOrange",
-
-        links: {
-            default: "https://freakslots.com/XxRRx9",
+        links: { default: "https://freakslots.com/XxRRx9" },
+        bonuses: {
+            default: { title: "Welcome Bonus up to €3,000 + 900 FS", details: "" },
+            byCountry: {},
+            byCurrency: {
+                USD: { title: "Welcome Bonus up to $3,000 + 900 FS", details: "" },
+                EUR: { title: "Welcome Bonus up to €3,000 + 900 FS", details: "" },
+            },
         },
-
         geo: {
             worldwide: false,
             includeCountries: [
-                "IE",
-                "CA",
-                "IS",
-                "LV",
-                "MK",
-                "AL",
-                "BA",
-                "ME",
-                "RO",
-                "PL",
-                "GR",
-                "EE",
-                "AT",
-                "SE",
-                "LI",
-                "LU",
-                "DK",
-                "NO",
-                "HU",
-                "SK",
-                "SI",
-                "BG",
-                "HR",
-                "LT",
-                "CH",
-                "GE",
-                "MD"
+                "IE", "CA", "IS", "LV", "MK", "AL", "BA", "ME", "RO", "PL", "GR", "EE", "AT", "SE", "LI", "LU", "DK", "NO",
+                "HU", "SK", "SI", "BG", "HR", "LT", "CH", "GE", "MD",
             ],
             includeRegions: [],
             excludeCountries: [],
         },
+    },
+
+    {
+        id: "hitnspin",
+        name: "Hit'N'Spin",
+        heroUrl: "/logos/hitnspin.png",
+        rating: 4.6,
+        tags: ["No deposit", "Slots"],
+        theme: "casinoThemeCyan",
+        links: { default: "https://freakslots.com/kC255k" },
+        bonuses: {
+            default: { title: "Welcome Bonus €800 + 200 FS", details: "" },
+            byCountry: {},
+            byCurrency: {
+                USD: { title: "Welcome Bonus $800 + 200 FS", details: "" },
+                EUR: { title: "Welcome Bonus €800 + 200 FS", details: "" },
+            },
+        },
+        geo: {
+            worldwide: false,
+            includeCountries: [
+                "HU", "RO", "BG", "PT", "DE", "CH", "PL", "IT", "LV", "LT", "EE", "GR", "BE", "LU", "LI", "AT", "DK", "NO", "SE", "GE",
+            ],
+            includeRegions: [],
+            excludeCountries: [],
+        },
+    },
+
+    {
+        id: "slotoro",
+        name: "Slotoro",
+        heroUrl: "/logos/slotoro.png",
+        rating: 4.3,
+        tags: ["Fast payouts", "Slots"],
+        theme: "casinoThemeBlue",
+        links: { default: "https://freakslots.com/bT42K2" },
+        bonuses: {
+            default: { title: "Welcome bonus €2,500 + 250 free spins", details: "" },
+            byCountry: {},
+            byCurrency: {
+                USD: { title: "Welcome bonus $2,500 + 250 free spins", details: "" },
+                EUR: { title: "Welcome bonus €2,500 + 250 free spins", details: "" },
+            },
+        },
+        geo: { worldwide: false, includeCountries: ["PL", "DE"], includeRegions: [], excludeCountries: [] },
     },
 ];

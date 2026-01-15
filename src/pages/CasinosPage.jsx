@@ -51,6 +51,7 @@ function PromoCard({ title, img, url }) {
 
 export default function CasinosPage() {
     const [countryCode, setCountryCode] = useState("");
+    const [geoLabel, setGeoLabel] = useState("");
 
     // No caching: always detect GEO on every app open (page mount)
     useEffect(() => {
@@ -65,7 +66,9 @@ export default function CasinosPage() {
                 const cc = String(data?.countryCode || "").toUpperCase();
                 if (!cc) return;
 
-                if (!cancelled) setCountryCode(cc);
+                if (cancelled) return;
+                setCountryCode(cc);
+                setGeoLabel(String(data?.label || ""));
             } catch {
                 // ignore
             }
@@ -78,6 +81,10 @@ export default function CasinosPage() {
         };
     }, []);
 
+    // New implementation: pass countryCode only — casinosData handles:
+    // - GEO filtering
+    // - affiliate link selection
+    // - bonus selection + currency conversion (EU/EUR, TR/TRY, IN/INR, else USD)
     const casinos = useMemo(() => getVisibleCasinosForCountry(countryCode), [countryCode]);
 
     const promos = useMemo(
@@ -108,9 +115,8 @@ export default function CasinosPage() {
         <div className="page" style={{ paddingLeft: 10, paddingRight: 10 }}>
             <div className="casinosHeroZone">
                 <div className="casinosHeroContent">
-                    <h1 className="casinosHeroTitle">
-                        Top Casinos
-                    </h1>
+                    <h1 className="casinosHeroTitle">Top Casinos</h1>
+
                     <p className="casinosHeroSubtitle">
                         Exclusive bonuses • Fast payouts • Trusted brands
                     </p>
@@ -152,9 +158,7 @@ export default function CasinosPage() {
                                     <span className="casinoStars">
                                         <Stars value={c.rating} />
                                     </span>
-                                    <span className="casinoRatingNum">
-                                        {Number(c.rating).toFixed(1)}
-                                    </span>
+                                    <span className="casinoRatingNum">{Number(c.rating).toFixed(1)}</span>
                                 </div>
                             </div>
 
@@ -164,7 +168,9 @@ export default function CasinosPage() {
                         <div className="casinoInfo">
                             <div className="casinoBonusBlock">
                                 <div className="casinoBonusTitle">{c.bonusTitle}</div>
-                                <div className="casinoBonusDetails">{c.bonusDetails}</div>
+                                {c.bonusDetails ? (
+                                    <div className="casinoBonusDetails">{c.bonusDetails}</div>
+                                ) : null}
                             </div>
 
                             {Array.isArray(c.tags) && c.tags.length ? (
@@ -189,6 +195,12 @@ export default function CasinosPage() {
                         </div>
                     </div>
                 ))}
+
+                {!casinos.length ? (
+                    <div style={{ opacity: 0.7, padding: "10px 2px", fontSize: 13 }}>
+                        No casinos available for this country.
+                    </div>
+                ) : null}
             </div>
         </div>
     );
