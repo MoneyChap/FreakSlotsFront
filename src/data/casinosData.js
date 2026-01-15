@@ -266,4 +266,25 @@ export const CASINOS = [
             excludeCountries: [],
         },
     },
+    {
+        id: "ggbet",
+        name: "GGBET",
+        heroUrl: "/logos/ggbet.png",
+        rating: 4.7,
+        bonusTitle: "100% up to €500",
+        bonusDetails: "Plus 200 free spins",
+        tags: ["Fast payouts", "Mobile"],
+        theme: "casinoThemeOrange",
+
+        links: {
+            default: "https://freakslots.com/XxRRx9",
+        },
+
+        geo: {
+            worldwide: true,
+            includeCountries: [],
+            includeRegions: [],
+            excludeCountries: [],
+        },
+    },
 ];
