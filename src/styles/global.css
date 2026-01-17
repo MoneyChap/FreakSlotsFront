@@ -741,10 +741,6 @@ a {
     overflow: hidden;
 }
 
-.casinosHeroContet {
-    width: 100%;
-}
-
 .casinosHeroTitle {
     font-size: 40px;
     font-weight: 800;
@@ -956,6 +952,50 @@ a {
     border-radius: 18px;
     border: 1px solid rgba(255, 255, 255, 0.10);
     background: rgba(0, 0, 0, 0.18);
+}
+
+/* Bonus scoreboard inside casino card */
+.bonusGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.bonusGrid3 {
+    grid-template-columns: 1fr 1fr;
+}
+
+.bonusMetric {
+    padding: 10px 10px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.bonusLabel {
+    font-size: 11px;
+    opacity: 0.75;
+    letter-spacing: 0.3px;
+}
+
+.bonusValue {
+    margin-top: 4px;
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: 0.2px;
+}
+
+.bonusTagline {
+    margin: 8px 0 12px;
+    font-size: 13px;
+    opacity: 0.8;
+}
+
+/* If you have 3 metrics, make it 3 columns on larger phones */
+@media (min-width: 420px) {
+    .bonusGrid3 {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
 }
 
 .casinoBonusTitle {

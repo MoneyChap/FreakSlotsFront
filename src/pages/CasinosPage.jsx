@@ -32,6 +32,58 @@ function Stars({ value }) {
     );
 }
 
+function parseBonusText(title = "", details = "") {
+    const t = String(title || "").trim();
+    const d = String(details || "").trim();
+
+    // Percent like 500%
+    const percentMatch = t.match(/(\d{1,4})\s*%/);
+    const percent = percentMatch ? `${percentMatch[1]}%` : "";
+
+    // Spins like 290 FS / 250 FD
+    const spinsMatch = t.match(/(\d{1,4})\s*(FS|FD)\b/i);
+    const spins = spinsMatch ? `${spinsMatch[1]} ${spinsMatch[2].toUpperCase()}` : "";
+
+    // Amount with currency prefix: €1,900 / $2,000 / ₹212,000 / ₺64,750
+    const prefixAmountMatch = t.match(/([€$£₹₺])\s*([\d][\d.,\s]*)/);
+    // Amount with currency suffix: 64,750 ₺
+    const suffixAmountMatch = t.match(/([\d][\d.,\s]*)\s*([€$£₹₺])/);
+
+    let amount = "";
+    if (prefixAmountMatch) amount = `${prefixAmountMatch[1]}${prefixAmountMatch[2].trim()}`;
+    else if (suffixAmountMatch) amount = `${suffixAmountMatch[1].trim()} ${suffixAmountMatch[2]}`;
+
+    // Tagline line:
+    // Prefer details. Otherwise, clean the title by removing the numeric bits.
+    let tagline = d;
+    if (!tagline) {
+        tagline = t
+            .replace(/([€$£₹₺])\s*[\d][\d.,\s]*/g, "")
+            .replace(/[\d][\d.,\s]*\s*([€$£₹₺])/g, "")
+            .replace(/\d{1,4}\s*(FS|FD)\b/gi, "")
+            .replace(/\d{1,4}\s*%/g, "")
+            .replace(/\s*\+\s*/g, " ")
+            .replace(/\s{2,}/g, " ")
+            .trim();
+    }
+
+    return { amount, spins, percent, tagline };
+}
+
+function normalizeMetricsFromCasino(c) {
+    // If you later add structured metrics into casinosData.js, they will be used first.
+    if (c?.bonusMetrics && typeof c.bonusMetrics === "object") {
+        const amount = String(c.bonusMetrics.amount || "").trim();
+        const spins = String(c.bonusMetrics.spins || "").trim();
+        const percent = String(c.bonusMetrics.percent || "").trim();
+        const tagline = String(c.bonusMetrics.tagline || c.bonusDetails || "").trim();
+        return { amount, spins, percent, tagline };
+    }
+
+    return parseBonusText(c?.bonusTitle || "", c?.bonusDetails || "");
+}
+
+
 function PromoCard({ title, img, url }) {
     const glow = useImageGlow(img);
 
@@ -149,10 +201,10 @@ export default function CasinosPage() {
                             <div className="casinoHeroOverlay" />
 
                             <div className="casinoHeroTop">
-                                <div className="casinoPill">
+                                {/* <div className="casinoPill">
                                     <span className="casinoPillDot" />
                                     <span className="casinoPillText">Hot bonus</span>
-                                </div>
+                                </div> */}
 
                                 <div className="casinoRating">
                                     <span className="casinoStars">
@@ -167,11 +219,48 @@ export default function CasinosPage() {
 
                         <div className="casinoInfo">
                             <div className="casinoBonusBlock">
-                                <div className="casinoBonusTitle">{c.bonusTitle}</div>
-                                {c.bonusDetails ? (
-                                    <div className="casinoBonusDetails">{c.bonusDetails}</div>
-                                ) : null}
+                                {(() => {
+                                    const m = normalizeMetricsFromCasino(c);
+                                    const items = [
+                                        m.amount ? { label: "Bonus", value: m.amount } : null,
+                                        m.spins ? { label: "Free spins", value: m.spins } : null,
+                                        m.percent ? { label: "Deposit", value: m.percent } : null,
+                                    ].filter(Boolean);
+
+                                    // If parsing failed, fall back to old display.
+                                    if (!items.length) {
+                                        return (
+                                            <>
+                                                <div className="casinoBonusTitle">{c.bonusTitle}</div>
+                                                {c.bonusDetails ? (
+                                                    <div className="casinoBonusDetails">{c.bonusDetails}</div>
+                                                ) : null}
+                                            </>
+                                        );
+                                    }
+
+                                    const gridClass =
+                                        items.length >= 3 ? "bonusGrid bonusGrid3" : "bonusGrid";
+
+                                    return (
+                                        <>
+                                            {m.tagline ? (
+                                                <div className="bonusTagline">Welcome Bonus:</div>
+                                            ) : null}
+
+                                            <div className={gridClass}>
+                                                {items.map((it) => (
+                                                    <div key={it.label} className="bonusMetric">
+                                                        <div className="bonusLabel">{it.label}</div>
+                                                        <div className="bonusValue">{it.value}</div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </>
+                                    );
+                                })()}
                             </div>
+
 
                             {Array.isArray(c.tags) && c.tags.length ? (
                                 <div className="casinoTags">

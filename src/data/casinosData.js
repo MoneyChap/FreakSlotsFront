@@ -94,7 +94,11 @@ function resolveBonus(casino, countryCode) {
     const bonuses = casino.bonuses || null;
 
     if (!bonuses) {
-        return { bonusTitle: casino.bonusTitle || "", bonusDetails: casino.bonusDetails || "" };
+        return {
+            bonusTitle: casino.bonusTitle || "",
+            bonusDetails: casino.bonusDetails || "",
+            bonusMetrics: casino.bonusMetrics || null,
+        };
     }
 
     const byCountry = bonuses.byCountry || {};
@@ -109,6 +113,7 @@ function resolveBonus(casino, countryCode) {
     return {
         bonusTitle: picked?.title || "",
         bonusDetails: picked?.details || "",
+        bonusMetrics: picked?.metrics || null,
     };
 }
 
@@ -124,11 +129,12 @@ export function getVisibleCasinosForCountry(countryCode) {
     return CASINOS
         .filter((c) => isCasinoAllowedInCountry(c, cc))
         .map((c) => {
-            const { bonusTitle, bonusDetails } = resolveBonus(c, cc);
+            const { bonusTitle, bonusDetails, bonusMetrics } = resolveBonus(c, cc);
             return {
                 ...c,
                 bonusTitle,
                 bonusDetails,
+                bonusMetrics,
                 playUrl: c.links?.[cc] || c.links?.default || c.playUrl || null,
             };
         })
