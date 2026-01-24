@@ -5,7 +5,7 @@ body {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-
+    overscroll-behavior-y: none;
     -webkit-touch-callout: none;
     /* iOS long-press menu */
 }
