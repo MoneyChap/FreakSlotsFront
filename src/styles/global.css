@@ -1209,3 +1209,41 @@ a {
 .swiper-slide {
     transform: translateZ(0);
 }
+
+/* Native GameCarousel (replaces Swiper) */
+.gameCarouselNative {
+    padding-top: 5px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+
+    /* Prevent page “rubber-band” effects from affecting the carousel */
+    overscroll-behavior-x: contain;
+
+    /* Keep scrolling responsive */
+    scroll-behavior: auto;
+
+    /* Improve touch handling */
+    touch-action: pan-x;
+
+    /* Hide scrollbars */
+    scrollbar-width: none;
+}
+
+.gameCarouselNative::-webkit-scrollbar {
+    display: none;
+}
+
+.gameCarouselTrack {
+    display: flex;
+    gap: 14px;
+    padding: 0 0 2px;
+    /* small bottom padding for nicer feel */
+    will-change: scroll-position;
+}
+
+.gameCarouselItem {
+    flex: 0 0 auto;
+    width: 220px;
+    /* matches your SwiperSlide width */
+}
