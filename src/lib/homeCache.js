@@ -41,11 +41,30 @@ export function writeHomeCache(sections) {
     }
 }
 
+async function fetchWithTimeout(url, options = {}, timeoutMs = 1800) {
+    const controller = new AbortController();
+    const t = setTimeout(() => controller.abort(), timeoutMs);
+
+    try {
+        const res = await fetch(url, {
+            ...options,
+            signal: controller.signal,
+        });
+        return res;
+    } finally {
+        clearTimeout(t);
+    }
+}
+
 export async function fetchHomeFromApi() {
     const API_BASE = import.meta.env.VITE_API_BASE;
     const url = `${API_BASE}/api/home`;
 
-    const res = await fetch(url, { headers: { Accept: "application/json" } });
+    const res = await fetchWithTimeout(
+        url,
+        { headers: { Accept: "application/json" }, cache: "no-store" },
+        1800
+    );
 
     const text = await res.text().catch(() => "");
     if (!res.ok) {

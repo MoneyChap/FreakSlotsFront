@@ -80,11 +80,12 @@ export default function App() {
     if (!showSplash) return;
 
     let cancelled = false;
+    const start = Date.now();
 
-    (async () => {
-      // Splash must be visible at least 1.7s
-      await Promise.all([warmPromise, sleep(1700)]);
+    const MIN_MS = 700;   // keep a short “nice” splash
+    const MAX_MS = 2000;  // hard cap: must disappear by itself
 
+    const finish = () => {
       if (cancelled) return;
 
       try {
@@ -94,10 +95,21 @@ export default function App() {
       }
 
       setShowSplash(false);
-    })();
+    };
+
+    // Hard stop no matter what
+    const hardTimer = setTimeout(finish, MAX_MS);
+
+    // Hide after warm completes, but never earlier than MIN_MS
+    warmPromise.finally(() => {
+      const elapsed = Date.now() - start;
+      const wait = Math.max(0, MIN_MS - elapsed);
+      setTimeout(finish, wait);
+    });
 
     return () => {
       cancelled = true;
+      clearTimeout(hardTimer);
     };
   }, [showSplash]);
 
