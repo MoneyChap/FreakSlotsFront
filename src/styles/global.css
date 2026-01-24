@@ -63,6 +63,13 @@ a {
     padding-top: calc(100px + env(safe-area-inset-top));
     padding-bottom: calc(96px + env(safe-area-inset-bottom));
     overscroll-behavior-y: contain;
+    scrollbar-width: none;
+}
+
+.page::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
 }
 
 /* Topbar (single merged pill) */
@@ -761,7 +768,7 @@ a {
     position: relative;
     padding: 28px 10px 34px;
     margin-bottom: 6px;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 .casinosHeroTitle {
