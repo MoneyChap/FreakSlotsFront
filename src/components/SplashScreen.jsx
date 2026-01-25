@@ -71,7 +71,7 @@ export default function SplashScreen() {
                         </div>
                     </div>
 
-                    <div className="splashTitle">FreakSlots</div>
+                    <div className="splashTitle">Slots</div>
                     <div className="splashSubtitle">Loading games</div>
                 </div>
 
