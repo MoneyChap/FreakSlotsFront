@@ -172,7 +172,7 @@ export const CASINOS = [
         id: "mega-pari",
         name: "Mega Pari",
         heroUrl: "/logos/megapari.png",
-        rating: 4.4,
+        rating: 4.7,
         tags: ["Beginner friendly"],
         theme: "casinoThemeGold",
         links: { default: "https://freakslots.com/games" },
