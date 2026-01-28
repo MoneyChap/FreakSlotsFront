@@ -58,7 +58,7 @@ export default function ProfilePage() {
                         </div>
                     </div>
 
-                    <a className="contactManagerBtn" href={managerUrl} target="_blank" rel="noreferrer">
+                    {/* <a className="contactManagerBtn" href={managerUrl} target="_blank" rel="noreferrer">
                         <span className="contactManagerIcon" aria-hidden="true">
                             <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -71,7 +71,7 @@ export default function ProfilePage() {
                             </svg>
                         </span>
                         <span>Contact manager</span>
-                    </a>
+                    </a> */}
                 </div>
             </div>
         </div>
