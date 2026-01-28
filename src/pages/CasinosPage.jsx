@@ -175,7 +175,7 @@ export default function CasinosPage() {
                 </div>
             </div>
 
-            <div className="promoCarousel promoCarouselFullBleed">
+            {/* <div className="promoCarousel promoCarouselFullBleed">
                 <Swiper
                     className="promoSwiper"
                     modules={[Pagination, Autoplay]}
@@ -191,7 +191,7 @@ export default function CasinosPage() {
                         </SwiperSlide>
                     ))}
                 </Swiper>
-            </div>
+            </div> */}
 
             <div className="casinosGrid">
                 {casinos.map((c) => (
