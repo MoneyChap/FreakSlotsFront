@@ -75,7 +75,7 @@ export default function GamePage() {
 
         const timer = setTimeout(() => {
             setShowPromo(true);
-        }, 10_000);
+        }, 60_000);
 
         return () => clearTimeout(timer);
     }, [game?.id, loading]);
