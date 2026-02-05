@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { ensureGeo, readSavedGeo } from "../lib/geo.js";
+import RealPlayPopup from "../components/RealPlayPopup.jsx";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -12,22 +14,9 @@ export default function GamePage() {
 
     const [iframeLoading, setIframeLoading] = useState(true);
     const [iframeFailed, setIframeFailed] = useState(false);
-
-    // // Telegram BackButton support
-    // useEffect(() => {
-    //     const tg = window.Telegram?.WebApp;
-    //     if (!tg?.BackButton) return;
-
-    //     const onBack = () => window.location.hash = "#/"; // hard navigate, very reliable
-
-    //     tg.BackButton.show();
-    //     tg.BackButton.onClick(onBack);
-
-    //     return () => {
-    //         tg.BackButton.offClick(onBack);
-    //         tg.BackButton.hide();
-    //     };
-    // }, []);
+    const [showPromo, setShowPromo] = useState(false);
+    const [promoDismissed, setPromoDismissed] = useState(false);
+    const [countryCode, setCountryCode] = useState("");
 
     // Load game from backend by id
     useEffect(() => {
@@ -53,11 +42,43 @@ export default function GamePage() {
         };
     }, [id]);
 
+    useEffect(() => {
+        const saved = readSavedGeo();
+        const cc = String(saved?.countryCode || "").toUpperCase();
+        if (cc) {
+            setCountryCode(cc);
+            return;
+        }
+
+        let cancelled = false;
+        ensureGeo().then((payload) => {
+            if (cancelled) return;
+            const next = String(payload?.countryCode || "").toUpperCase();
+            if (next) setCountryCode(next);
+        });
+
+        return () => {
+            cancelled = true;
+        };
+    }, []);
+
     // When game changes, reset iframe state
     useEffect(() => {
         setIframeFailed(false);
         setIframeLoading(true);
     }, [game?.demoUrl]);
+
+    useEffect(() => {
+        if (loading || !game) return;
+        setShowPromo(false);
+        setPromoDismissed(false);
+
+        const timer = setTimeout(() => {
+            setShowPromo(true);
+        }, 10_000);
+
+        return () => clearTimeout(timer);
+    }, [game?.id, loading]);
 
     if (loading) {
         return (
@@ -138,6 +159,15 @@ export default function GamePage() {
                     />
                 )}
             </div>
+
+            <RealPlayPopup
+                open={showPromo && !promoDismissed}
+                onClose={() => {
+                    setShowPromo(false);
+                    setPromoDismissed(true);
+                }}
+                countryCode={countryCode}
+            />
         </div>
     );
 }

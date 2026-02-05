@@ -345,6 +345,203 @@ a {
     justify-content: center;
 }
 
+/* Real play popup */
+.realPlayPopupOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 120;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px 14px calc(18px + env(safe-area-inset-bottom));
+    background: rgba(0, 0, 0, 0.0);
+    backdrop-filter: blur(0px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 220ms ease, backdrop-filter 220ms ease, background 220ms ease;
+}
+
+.realPlayPopupOverlay.isOpen {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(8px);
+    pointer-events: auto;
+}
+
+.realPlayPopupOverlay.isClosing {
+    pointer-events: auto;
+}
+
+.realPlayPopup {
+    width: min(520px, 100%);
+    border-radius: 22px;
+    background: rgba(24, 24, 24, 0.96);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 22px 60px rgba(0, 0, 0, 0.65);
+    padding: 16px;
+    transform: translateY(10px) scale(0.98);
+    opacity: 0;
+    transition: transform 500ms ease, opacity 500ms ease;
+}
+
+.realPlayPopupOverlay.isOpen .realPlayPopup {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+.realPlayPopupOverlay.isClosing .realPlayPopup {
+    transform: translateY(8px) scale(0.985);
+    opacity: 0;
+}
+
+.realPlayPopupTitle {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: 0.2px;
+    margin: 6px 0 14px;
+}
+
+.realPlayPopupList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.realPlayPopupCard {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 14px;
+    padding: 12px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.realPlayPopupRank {
+    width: 30px;
+    height: 30px;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    font-weight: 900;
+    font-size: 14px;
+    color: #111;
+    background: linear-gradient(135deg, #ffc24a, #ff8a00);
+    box-shadow: 0 0 14px rgba(255, 165, 0, 0.45);
+}
+
+.realPlayPopupLogo {
+    width: 80px;
+    height: 68px;
+    border-radius: 16px;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0);
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+}
+
+.realPlayPopupLogo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.realPlayPopupInfo {
+    min-width: 0;
+}
+
+.realPlayPopupTop {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+
+.realPlayPopupName {
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.realPlayPopupRating {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 800;
+    color: #25d366;
+}
+
+.realPlayPopupStar {
+    font-size: 12px;
+}
+
+.realPlayPopupBadges {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.realPlayPopupBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.realPlayPopupBadge.badgeGold {
+    background: rgba(255, 168, 0, 0.18);
+    color: #ffb536;
+}
+
+.realPlayPopupBadge.badgeRed {
+    background: rgba(255, 80, 80, 0.18);
+    color: #ff5d5d;
+}
+
+.realPlayPopupTagline {
+    margin-top: 6px;
+    font-size: 12px;
+    opacity: 0.78;
+    line-height: 1.3;
+}
+
+.realPlayPopupPlay {
+    border: 0;
+    padding: 9px 16px;
+    border-radius: 999px;
+    background: #fff;
+    color: #3b3b3b;
+    font-weight: 800;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+.realPlayPopupClose {
+    width: 100%;
+    margin-top: 14px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+}
+
 /* Bottom navigation */
 .bottomNav {
     position: fixed;
