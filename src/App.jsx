@@ -12,6 +12,8 @@ import HomePage from "./pages/HomePage.jsx";
 import GamePage from "./pages/GamePage.jsx";
 import CasinosPage from "./pages/CasinosPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
+import SpinWheelPage from "./pages/SpinWheelPage.jsx";
+
 
 import BottomNav from "./components/BottomNav.jsx";
 import SplashScreen from "./components/SplashScreen.jsx";
@@ -48,12 +50,14 @@ function TelegramBackButtonController() {
 
 export function AppLayout() {
   const isGamePage = useMatch("/game/:id");
+  const isWheelPage = useMatch("/wheel");
+  const isDetailPage = Boolean(isGamePage || isWheelPage);
 
   return (
     <>
       <TelegramBackButtonController />
       <Outlet />
-      {!isGamePage && <BottomNav />}
+      {!isDetailPage && <BottomNav />}
     </>
   );
 }
@@ -123,6 +127,7 @@ export default function App() {
               <Route path="/casinos" element={<CasinosPage />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/game/:id" element={<GamePage />} />
+              <Route path="/wheel" element={<SpinWheelPage />} />
             </Route>
           </Routes>
         </HashRouter>

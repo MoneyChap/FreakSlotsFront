@@ -220,13 +220,13 @@ export const CASINOS = [
         links: { default: "https://freakslots.com/x1fXSH" },
         bonuses: {
             default: {
-                title: "WELCOME BONUS UP TO €2,000",
+                title: "Welcome Bonuss up to €2,000",
                 details: "Up to 450% deposit bonus and up to 250 FD",
             },
             byCountry: {},
             byCurrency: {
-                USD: { title: "WELCOME BONUS UP TO $2,000", details: "Up to 450% deposit bonus and up to 250 FD" },
-                EUR: { title: "WELCOME BONUS UP TO €2,000", details: "Up to 450% deposit bonus and up to 250 FD" },
+                USD: { title: "Welcome Bonuss up to $2,000", details: "Up to 450% deposit bonus and up to 250 FD" },
+                EUR: { title: "Welcome Bonuss up to €2,000", details: "Up to 450% deposit bonus and up to 250 FD" },
             },
         },
         geo: {

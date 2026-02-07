@@ -76,6 +76,18 @@ export default function HomePage() {
                 </div>
             </div>
 
+            <button
+                type="button"
+                className="wheelEntryCard"
+                onClick={() => nav("/wheel")}
+                aria-label="Open Spin the Wheel"
+            >
+                <div className="wheelEntryBadge">Lucky Wheel</div>
+                <div className="wheelEntryTitle">Spin the wheel</div>
+                <div className="wheelEntrySubtitle">Win casino bonuses and free spins</div>
+                <div className="wheelEntryCta">Play Now</div>
+            </button>
+
             {loading ? <div className="homeInlineLoading">Loading…</div> : null}
 
             {sections.map((s) => (
