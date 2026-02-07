@@ -5,6 +5,7 @@ import {
   Route,
   Outlet,
   useNavigate,
+  useLocation,
   useMatch,
 } from "react-router-dom";
 
@@ -23,7 +24,9 @@ import { warmHomeCache } from "./lib/homeCache.js";
 
 function TelegramBackButtonController() {
   const navigate = useNavigate();
-  const isGamePage = useMatch("/game/:id");
+  const { pathname } = useLocation();
+
+  const isHome = pathname === "/";
 
   const onBack = useCallback(() => {
     navigate("/", { replace: true });
@@ -35,7 +38,7 @@ function TelegramBackButtonController() {
 
     tg.BackButton.offClick(onBack);
 
-    if (isGamePage) {
+    if (!isHome) {
       tg.BackButton.show();
       tg.BackButton.onClick(onBack);
     } else {
@@ -43,7 +46,7 @@ function TelegramBackButtonController() {
     }
 
     return () => tg.BackButton.offClick(onBack);
-  }, [isGamePage, onBack]);
+  }, [isHome, onBack]);
 
   return null;
 }

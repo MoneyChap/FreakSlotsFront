@@ -3,7 +3,7 @@ import { ensureGeo, readSavedGeo } from "../lib/geo.js";
 import { getVisibleCasinosForCountry } from "../data/casinosData.js";
 
 const STORAGE_NEXT_SPIN = "freakslots_wheel_next_spin_at_v1";
-const COOLDOWN_MS = 10 * 1000;
+const COOLDOWN_MS = 12 * 60 * 60 * 1000;
 
 const CARD_WIDTH = 220;
 const CARD_GAP = 12;
